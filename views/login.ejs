@@ -1,0 +1,56 @@
+<% include partials/header %>
+
+<div class="mt-3 pt-3 bg-transparent">
+<!--    <h1>Login</h1>-->
+<!--    <hr>-->
+
+    <div class="container bg-transparent" style="width: 30%;">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card shadow" style="width: 100%">
+                <div class="card-header">
+                    <h3>Login</h3>
+                </div>
+				<% if(error && error.length > 0) { %>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<%=error%>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<% } %>
+                <div class="card-body">
+                    <form action="/login" method="POST">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="username" class="form-control" id="username" name="username" placeholder="enter a username" autofocus>
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="enter a password">
+                        </div>
+                        <div class="" style="text-align:center;">
+                            <input type="submit" value="Login" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="text-center">
+						<% if(config.mailerEmail !== "") { %>
+							<a class="" href="/forgot">Forgot your password?</a>
+							<br>
+						<% } %>
+                        <a class="" href="/register">Want to register an account?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="fixed-bottom">
+<% include partials/footer %>
