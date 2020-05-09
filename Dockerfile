@@ -6,6 +6,6 @@ COPY . /app
 
 RUN npm install --production
 
-EXPOSE 8080
+EXPOSE 3000
 
 ENTRYPOINT  [ "node", "app.js" ]
