@@ -57,6 +57,11 @@ app.use(opCenterRoutes);
 app.use(userRoutes);
 app.use(calendarRoutes);
 
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+	res.status(404).render('404');
+});
+
 app.listen(NODE_PORT, function(){
    console.log("PERSMAN: ONLINE") ;
 });
