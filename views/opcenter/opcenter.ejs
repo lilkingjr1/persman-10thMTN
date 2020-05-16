@@ -42,31 +42,31 @@
             <div class="card text-center" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title"><strong>Request a Discharge</strong></h5>
-                    <p class="card-text">Request a Discharge from the unit.</p>
+                    <p class="card-text">Request for an honorable, permanent/long-term departure from the unit. Approved applicants are allowed to rejoin the unit at a later date.</p>
                     <a href="/opcenter/discharge" class="card-btn btn btn-primary">Request a Discharge</a>
                 </div>
                 <div class="card-footer">
-                    <small>This action can be seen by <%=config.userGroups[1]%> and above.</small>
+                    <small>Requests are reviewed by S-1 Staff in approx. 48 hours.</small>
                 </div>
             </div>
             <div class="card text-center" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title"><strong>Request a Leave of Absence</strong></h5>
-                    <p class="card-text">Request a Leave of Absence.</p>
+                    <p class="card-text">Request for a temporary relief from duties. Requests ideally should be made 1 week before your expected leave.</p>
                     <a href="/opcenter/loa" class="card-btn btn btn-primary">Request a Leave of Absence</a>
                 </div>
                 <div class="card-footer">
-                    <small>This action can be seen by <%=config.userGroups[1]%> and above.</small>
+                    <small>Requests are reviewed by S-1 Staff in approx. 48 hours.</small>
                 </div>
             </div>
             <div class="card text-center" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title"><strong>View Your Requests</strong></h5>
-                    <p class="card-text">View all of your requests.</p>
+                    <h5 class="card-title"><strong>View Your Request(s)</strong></h5>
+                    <p class="card-text">View the status of your leave request(s). Once Approved/Denied, requests will periodically be cleaned up and removed from this list.</p>
                     <a href="/opcenter/yourrequests" class="card-btn btn btn-primary">View Requests</a>
                 </div>
                 <div class="card-footer">
-                    <small>This action can be seen only by you.</small>
+                    <small>Only S-1 Staff and Administration can see your requests.</small>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
                     <a href="/opcenter/application" class="card-btn btn btn-primary">Create Application</a>
                 </div>
                 <div class="card-footer">
-                    <small>This action can be seen only by <%=config.userGroups[0]%>s.</small>
+                    <small>Please only submit <b>one</b> application at a time.</small>
                 </div>
             </div>
 			<div class="card text-center" style="width: 18rem;">
@@ -91,7 +91,7 @@
 					<a href="/opcenter/yourrequests" class="card-btn btn btn-primary">View Application</a>
 				</div>
 				<div class="card-footer">
-					<small>This action can be seen only by <%=config.userGroups[0]%>s.</small>
+					<small>Your application can only be seen by yourself and <%=config.userGroups[3]%>s.</small>
 				</div>
 			</div>
         </div>
@@ -108,33 +108,33 @@
 				<div class="card text-center" style="width: 18rem;">
 					<div class="card-body">
 						<h5 class="card-title"><strong>View Requests</strong></h5>
-						<p class="card-text">View all user requests.</p>
+						<p class="card-text">View all user requests/applications.</p>
 						<a href="/opcenter/requests" class="card-btn btn btn-primary">View Requests</a>
 					</div>
 					<div class="card-footer">
-						<small>This action can be seen by <%=config.userGroups[3]%>s and above.</small>
+						<small>Only <%=config.userGroups[3]%>s and above have access to this.</small>
 					</div>
 				</div>
 			<% } %>
 			<% if(currentUser.role.num >= 2) { %>
 				<div class="card text-center" style="width: 18rem;">
 					<div class="card-body">
-						<h5 class="card-title"><strong>Create Events</strong></h5>
-						<p class="card-text">Create a new event.</p>
+						<h5 class="card-title"><strong>Create Event</strong></h5>
+						<p class="card-text">Create a new event on the calendar.</p>
 						<a href="/calendar/event" class="card-btn btn btn-primary">Create Event</a>
 					</div>
 					<div class="card-footer">
-						<small>This action can be seen by <%=config.userGroups[2]%>s and above.</small>
+						<small>Only <%=config.userGroups[2]%>s and above have access to this.</small>
 					</div>
 				</div>
 				<div class="card text-center" style="width: 18rem;">
 					<div class="card-body">
 						<h5 class="card-title"><strong>View Events</strong></h5>
-						<p class="card-text">View all events.</p>
+						<p class="card-text">View all events on the calendar.</p>
 						<a href="/calendar/events" class="card-btn btn btn-primary">View Events</a>
 					</div>
 					<div class="card-footer">
-						<small>This action can be seen by <%=config.userGroups[2]%>s and above.</small>
+						<small>Only <%=config.userGroups[2]%>s and above have access to this.</small>
 					</div>
 				</div>
 			<% } %>

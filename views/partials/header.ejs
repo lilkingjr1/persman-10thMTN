@@ -42,7 +42,7 @@
             <%if(currentUser) {%>
                 <% if(currentUser.role.num >= 1 || config.enableVisibility === "on") { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/listusers">Show Members</a>
+                        <a class="nav-link" href="/listusers">Personnel List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/opcenter/">Operations Center</a>
@@ -57,7 +57,7 @@
                 <% } %>
             <% } else if(config.enableVisibility === "on") {%>
 				<li class="nav-item">
-					<a class="nav-link" href="/listusers">Show Members</a>
+					<a class="nav-link" href="/listusers">Personnel List</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/calendar/">Calendar</a>

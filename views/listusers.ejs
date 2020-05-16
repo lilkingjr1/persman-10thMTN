@@ -333,7 +333,11 @@
 								<tr>
 									<td class="align-middle"><img src="/ranks/small/<%=user.rank.toLowerCase()%>.png" title="<%=user.rank%>"></td>
 									<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
-									<td class="align-middle"><%=user.unit.platoon%>, <%=user.unit.squad%>, <%=user.unit.team%></td>
+									<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
+										<td class="align-middle">Not Assigned</td>
+									<% } else { %>
+										<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
+									<% } %>
 									<td class="align-middle"><span class="<%=user.status%>"><%=user.status%></span></td>
 									<td class="align-middle"><%=user.role.name%></td>
 									<% if(permissionGroup >= 4) { %>
