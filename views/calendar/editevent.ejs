@@ -35,8 +35,13 @@
         </div>
 
         <div class="form-group">
-            <label for="img">Image Name</label>
-            <input id="img" class="form-control" type="text" name="imagename"  value="<%=event.imageName%>" required>
+            <label for="img">Image URL</label>
+            <input id="img" class="form-control" list="defaultURLs" type="text" name="imagename" value="<%=event.imageName%>" placeholder="enter an image link, or select a standardized one from the list" pattern="\/event\/.+\.(jpg|png)|https?:\/\/.+\.(jpg|jpeg|png)">
+			<datalist id="defaultURLs">
+				<option value="/event/bct.png">
+				<option value="/event/ftx.png">
+			</datalist>
+            <small class="form-text text-muted">Only JPG or PNG images are allowed.</small>
         </div>
 
         <div class="form-group">
