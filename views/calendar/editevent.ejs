@@ -1,10 +1,13 @@
 <% include ../partials/header %>
 
 <div class="container shadow mt-3 p-3 white">
+	<div class="d-flex justify-content-between">
+        <div><h1>Change event details for <strong><%=event.title%></strong></h1></div>
+		<div><a href="/calendar/event/<%=event._id%>" class="btn btn-info">View Event</a></div>
+	</div>
+    <hr>
+
     <form action="/calendar/event/edit/" method="POST">
-        <h1>Change event details for <strong><%=event.title%></strong></h1>
-        <hr>
-		
 		<% if(error && error.length > 0) { %>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <%=error%>
