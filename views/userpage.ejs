@@ -130,37 +130,37 @@
 												<button class="btn btn-warning">Edit User</button>
 											</form>
 										</div>
-										<% if(currentUser.role.num >= 4) { %>
-										<div class="ml-4">
-											<td class="align-middle">
-												<form action="/user/delete/<%=user._id%>" method="post">
-													<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete">
-														Delete User
-													</button>
+										<% if(currentUser.role.num >= 4 && user.role.num < 5) { %>
+											<div class="ml-4">
+												<td class="align-middle">
+													<form action="/user/delete/<%=user._id%>" method="post">
+														<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete">
+															Delete User
+														</button>
 
-													<!-- Modal -->
-													<div class="modal fade" id="delete" tabindex="-1" role="dialog">
-														<div class="modal-dialog" role="document">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<h5 class="modal-title">Confirm Delete User</h5>
-																	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																		<span aria-hidden="true" class="modal-span">&times;</span>
-																	</button>
-																</div>
-																<div class="modal-body">
-																	This action cannot be undone.
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-																	<button type="submit" class="btn btn-danger btn-sm">Delete User</button>
+														<!-- Modal -->
+														<div class="modal fade" id="delete" tabindex="-1" role="dialog">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<h5 class="modal-title">Confirm Delete User</h5>
+																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																			<span aria-hidden="true" class="modal-span">&times;</span>
+																		</button>
+																	</div>
+																	<div class="modal-body">
+																		This action cannot be undone.
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+																		<button type="submit" class="btn btn-danger btn-sm">Delete User</button>
+																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-												</form>
-											</td>
-										</div>
+													</form>
+												</td>
+											</div>
 										<% } %>
 									</div>
 								</div>
