@@ -148,11 +148,26 @@ router.get("/calendar/event/edit/:id", isLoggedIn, function(req,res){
 router.post("/calendar/event/edit/", isLoggedIn, function(req,res){
     if(req.user.role.num < 2) return res.redirect("/");
     let event = {};
-    if(req.body.eventtype === "Basic Training") {
-        event = {type: "Basic Training", color : "#28a745"};
-    } else if(req.body.eventtype === "Operation") {
-        event = {type: "Operation", color : "#007bff"};
-    }
+	switch(req.body.eventtype) {
+		case "Basic Combat Training":
+			event = {type: "Basic Combat Training", color : "#007bff"};
+			break;
+		case "Qualification":
+			event = {type: "Qualification", color : "#663399"};
+			break;
+		case "Training/FTX":
+			event = {type: "Training/FTX", color : "#33993C"};
+			break;
+		case "Deployment":
+			event = {type: "Deployment", color : "#993333"};
+			break;
+		case "Staff Meeting":
+			event = {type: "Staff Meeting", color : "#E6A118"};
+			break;
+		default:
+			event = {type: "", color : "#000000"};
+			break;
+	}
     const body = req.body;
     Calendar.findByIdAndUpdate(body.id, {
             $set: {
