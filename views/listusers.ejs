@@ -340,7 +340,7 @@
 									<% } %>
 									<td class="align-middle"><span class="<%=user.status%>"><%=user.status%></span></td>
 									<td class="align-middle"><%=user.role.name%></td>
-									<% if(permissionGroup >= 4) { %>
+									<% if(permissionGroup >= 4 && user.role.num < 5) { %>
 										<td class="align-middle">
 											<form action="/user/delete/<%=user._id%>" method="post">
 												<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete<%=num%>">
@@ -369,6 +369,8 @@
 												</div>
 											</form>
 										</td>
+									<% } else { %>
+										<td class="align-middle"></td>
 									<% } %>
 									<td class="align-middle">
 										<form action="/user/edit/<%=user._id%>" method="get">
