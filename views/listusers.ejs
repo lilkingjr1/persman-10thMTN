@@ -159,7 +159,9 @@
 											<td class="align-middle"><%=user.position%>, 
 											<!-- This is a super ghetto way to display position in numbers by searching for the number in the platoon/squad name, and also handling special platoons without number names. It can probably be done better, but its 2am and I don't feel like rewriting the whole sorting alg. to fix this small cosmetic problem. -->
 											<% if(platoons[i].squads[j] === "HQ" || platoons[i].squads[j] === "Headquarters") { %>
-												<% if((/(\d+)/).test(platoons[i].name)) { %>
+												<% if(platoons[i].name.includes("Aviation")) { %>
+													Knighthawks
+												<% } else if((/(\d+)/).test(platoons[i].name)) { %>
 													<%=config.companies%> <%=platoons[i].name.match(/(\d+)/)[0]%> Actual
 												<% } else { %>
 													<%=platoons[i].name%> Actual
