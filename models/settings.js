@@ -1,5 +1,5 @@
 const mongoose = require("mongoose"),
-    config = require("../settings.json");
+    config = require("../default-settings.json");
 
 const SettingsSchema = new mongoose.Schema({
     websiteName: {type: String, default: config.websiteName},
