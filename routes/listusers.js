@@ -1,17 +1,22 @@
-const express = require("express"), router = express.Router(), passport = require("passport"),
-    User = require("../models/user"), config = require('../settings.json'), _ = require("lodash");
+const express = require("express"), 
+    router = express.Router(), 
+    passport = require("passport"),
+    _ = require("lodash");
 
 router.get("/listusers", isVisible, function (req, res) {
     let companies = [];
     let platoons = [];
     let sShops = [];
-    const sortingPlatoons = config.platoons;
-    const sortingSquads = config.squads;
-    const sortingTeams = config.teams;
-	const sortingRanks = config.ranks;
-	const sortingSShops = config.sShops;
+    const sortingPlatoons = res.locals.config.platoons;
+    const sortingSquads = res.locals.config.squads;
+    const sortingTeams = res.locals.config.teams;
+	const sortingRanks = res.locals.config.ranks;
+	const sortingSShops = res.locals.config.sShops;
 	let numOfReserve = 0;
-	let numOfRetired = 0;
+    let numOfRetired = 0;
+
+    let User = require("../models/user")(res.locals.config);
+        
     User.find({}, function (err, allUsers) {
         if (err) {
             console.log(err);
@@ -71,7 +76,7 @@ router.get("/listusers", isVisible, function (req, res) {
 });
 
 function isVisible(req, res, next) {
-    if (config.enableVisibility === "on" || req.isAuthenticated()) {
+    if (res.locals.config.enableVisibility === "on" || req.isAuthenticated()) {
         return next();
     }
     res.redirect("/login");
