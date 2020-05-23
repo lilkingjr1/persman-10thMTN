@@ -1,4 +1,8 @@
-const express = require("express"), router = express.Router(), User = require("../models/user"), Calendar = require("../models/calendar"), Event = require("../models/eventspecifics"), async = require("async"), config = require('../settings.json');
+const express = require("express"), 
+    router = express.Router(),
+    Calendar = require("../models/calendar"), 
+    Event = require("../models/eventspecifics"), 
+    async = require("async");
 
 router.get("/calendar", isVisible, function(req, res){
     Calendar.find({}, function(err, allEvents){
@@ -213,7 +217,7 @@ router.post("/calendar/events/:id", isLoggedIn, function(req, res){
  }
 
 function isVisible(req, res, next) {
-    if (config.enableVisibility === "on" || req.isAuthenticated()) {
+    if (res.locals.config.enableVisibility === "on" || req.isAuthenticated()) {
         return next();
     }
     res.redirect("/login");
