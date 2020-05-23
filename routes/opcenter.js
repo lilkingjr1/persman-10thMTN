@@ -183,7 +183,7 @@ router.post("/opcenter/application", isLoggedIn, function(req,res){
         mic: req.body.mic,
         ts3: req.body.ts3,
         tfar: req.body.tfar,
-        discord: req.body.discord,
+        discord: true,
         discordUsername: req.body.discordUsername,
         language: req.body.language,
         ace: req.body.ace,
