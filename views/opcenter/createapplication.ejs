@@ -67,6 +67,12 @@
             <small class="form-text text-muted">Copy your profile link from your Steam page so we can contact you if you get accepted.</small>
         </div>
 
+        <label for="discordUsername">*Enter your Discord username</label>
+        <div class="form-group">
+            <input class="form-control" id="discordUsername" type="text" name="discordUsername" placeholder="Username#1234" pattern=".+#[0-9]{4}" required>
+            <small class="form-text text-muted">Enter your Discord user name, including the unique, 4 digit, number identifier.</small>
+        </div>
+
         <label for="arma3">*Do you own a copy of Arma 3?</label>
         <div class="form-group">
             <div class="form-check form-check-inline">
@@ -130,25 +136,6 @@
                 <label class="form-check-label" for="no">No</label>
             </div>
             <small class="form-text text-muted">TFAR is an Arma 3 mod that allows for radio communication through TS3. If you do not have the plugin installed, our instructors will help you get it installed once you are admitted to the unit.</small>
-        </div>
-
-        <label for="discord">*Do you use <a href="https://discordapp.com/download" target="_blank">Discord</a>?</label>
-        <div class="form-group">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="discord" id="yes" value="Yes" required>
-                <label class="form-check-label" for="yes">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="discord" id="no" value="No" required>
-                <label class="form-check-label" for="no">No</label>
-            </div>
-            <small class="form-text text-muted">Our unit does a lot of communication through Discord. While it is not required to have, it is <b>highly</b> recommended.</small>
-        </div>
-
-        <label for="discordUsername">Enter your Discord username (if applicable):</label>
-        <div class="form-group">
-            <input class="form-control" id="discordUsername" type="text" name="discordUsername" placeholder="Username#1234" pattern=".+#[0-9]{4}">
-            <small class="form-text text-muted">If you have Discord, enter your user name, including the unique, 4 digit, number identifier.</small>
         </div>
 
         <label for="ace">*Do you have any experience using the mod ACE and/or its medical system?</label>

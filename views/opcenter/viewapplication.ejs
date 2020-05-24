@@ -63,6 +63,12 @@
                         <input class="form-control" id="steamProfile" type="text" name="steamProfile" value="<%=app.steamProfile%>" disabled>
                     </div>
 
+                    <label for="discordUsername">*Enter your Discord username</label>
+                    <div class="form-group">
+                        <input class="form-control" id="discordUsername" type="text" name="discordUsername" value="<%=app.discordUsername%>" disabled>
+                        <small class="form-text text-muted">Enter your Discord user name, including the unique, 4 digit, number identifier.</small>
+                    </div>
+
                     <label for="arma3">*Do you own a copy of Arma 3?</label>
                     <div class="form-group">
                         <input class="form-control" type="text" id="arma3" name="arma3" value="<%=app.arma3%>" disabled>
@@ -87,18 +93,6 @@
                     <div class="form-group">
                         <input class="form-control" id="tfar" type="text" name="tfar" value="<%=app.tfar%>" disabled>
                         <small class="form-text text-muted">If you do not have the plugin installed, our instructors will help you get it installed once you are admitted to the unit.</small>
-                    </div>
-
-                    <label for="discord">*Do you use Discord?</label>
-                    <div class="form-group">
-                        <input class="form-control" id="discord" type="text" name="discord" value="<%=app.discord%>" disabled>
-                        <small class="form-text text-muted">Our unit does a lot of communication through Discord. While it is not required to have, it is <b>highly</b> recommended.</small>
-                    </div>
-
-                    <label for="discordUsername">Enter your Discord username (if applicable):</label>
-                    <div class="form-group">
-                        <input class="form-control" id="discordUsername" type="text" name="discordUsername" value="<%=app.discordUsername%>" disabled>
-                        <small class="form-text text-muted">If you have Discord, enter your user name, including the unique, 4 digit, number identifier.</small>
                     </div>
 
                     <label for="ace">*Do you have any experience using the mod ACE and/or its medical system?</label>
@@ -164,4 +158,3 @@
 </div>
 
 <% include ../partials/footer %>
-
