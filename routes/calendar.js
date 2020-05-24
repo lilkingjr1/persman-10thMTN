@@ -1,4 +1,8 @@
-const express = require("express"), router = express.Router(), User = require("../models/user"), Calendar = require("../models/calendar"), Event = require("../models/eventspecifics"), async = require("async"), config = require('../settings.json');
+const express = require("express"), 
+    router = express.Router(),
+    Calendar = require("../models/calendar"), 
+    Event = require("../models/eventspecifics"), 
+    async = require("async");
 
 router.get("/calendar", isVisible, function(req, res){
     Calendar.find({}, function(err, allEvents){
@@ -33,11 +37,26 @@ router.get("/calendar/event", isLoggedIn, function(req,res){
 router.post("/calendar/event", isLoggedIn, function(req,res){
     if(req.user.role.num < 2) return res.redirect("/");
     let event = {};
-    if(req.body.eventtype === "Basic Training") {
-        event = {type: "Basic Training", color : "#28a745"};
-    } else if(req.body.eventtype === "Operation") {
-        event = {type: "Operation", color : "#007bff"};
-    }
+	switch(req.body.eventtype) {
+		case "Basic Combat Training":
+			event = {type: "Basic Combat Training", color : "#007bff"};
+			break;
+		case "Qualification":
+			event = {type: "Qualification", color : "#663399"};
+			break;
+		case "Training/FTX":
+			event = {type: "Training/FTX", color : "#33993C"};
+			break;
+		case "Deployment":
+			event = {type: "Deployment", color : "#993333"};
+			break;
+		case "Staff Meeting":
+			event = {type: "Staff Meeting", color : "#E6A118"};
+			break;
+		default:
+			event = {type: "", color : "#000000"};
+			break;
+	}
     const body = req.body;
     const newEvent = new Calendar({
         title: body.eventname,
@@ -133,11 +152,26 @@ router.get("/calendar/event/edit/:id", isLoggedIn, function(req,res){
 router.post("/calendar/event/edit/", isLoggedIn, function(req,res){
     if(req.user.role.num < 2) return res.redirect("/");
     let event = {};
-    if(req.body.eventtype === "Basic Training") {
-        event = {type: "Basic Training", color : "#28a745"};
-    } else if(req.body.eventtype === "Operation") {
-        event = {type: "Operation", color : "#007bff"};
-    }
+	switch(req.body.eventtype) {
+		case "Basic Combat Training":
+			event = {type: "Basic Combat Training", color : "#007bff"};
+			break;
+		case "Qualification":
+			event = {type: "Qualification", color : "#663399"};
+			break;
+		case "Training/FTX":
+			event = {type: "Training/FTX", color : "#33993C"};
+			break;
+		case "Deployment":
+			event = {type: "Deployment", color : "#993333"};
+			break;
+		case "Staff Meeting":
+			event = {type: "Staff Meeting", color : "#E6A118"};
+			break;
+		default:
+			event = {type: "", color : "#000000"};
+			break;
+	}
     const body = req.body;
     Calendar.findByIdAndUpdate(body.id, {
             $set: {
@@ -183,7 +217,7 @@ router.post("/calendar/events/:id", isLoggedIn, function(req, res){
  }
 
 function isVisible(req, res, next) {
-    if (config.enableVisibility === "on" || req.isAuthenticated()) {
+    if (res.locals.config.enableVisibility === "on" || req.isAuthenticated()) {
         return next();
     }
     res.redirect("/login");

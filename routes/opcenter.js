@@ -1,14 +1,10 @@
 const express = require("express"),
     router = express.Router(),
-    User = require("../models/user"),
     Discharge = require("../models/discharge"),
     Leave = require("../models/loa"),
     async = require("async"),
     Application = require("../models/application"),
-    Comment = require("../models/comment"),
-    fs = require("fs"),
-    configName = '../settings.json',
-    config = require('../settings.json');
+    Comment = require("../models/comment");
 
 router.get("/opcenter", isLoggedIn, function(req, res){
    res.render("opcenter/opcenter", {submitted: 0});
@@ -25,7 +21,6 @@ router.get("/opcenter/loa", isLoggedIn, function(req, res){
 });
 
 router.get("/opcenter/yourrequests", isLoggedIn, function(req, res){
-   //if(req.user.role.num === 0) return res.redirect("/");
    Discharge.find({ownerID: req.user.id}, function(err,discharge){
        if(err) {
            console.log(err);
@@ -46,6 +41,7 @@ router.get("/opcenter/yourrequests", isLoggedIn, function(req, res){
 
 router.post("/opcenter/discharge", isLoggedIn, function(req, res){
     if(req.user.role.num === 0) return res.redirect("/");
+
     Discharge.create({reason: req.body.reason, ownerID: req.body.id, dateCreated: Date.now()}, function(err){
         if(err) {
             console.log(err);
@@ -57,11 +53,7 @@ router.post("/opcenter/discharge", isLoggedIn, function(req, res){
 
 router.post("/opcenter/loa", isLoggedIn, function(req, res){
     if(req.user.role.num === 0) return res.redirect("/");
-    /*User.findByIdAndUpdate({_id: req.user._id}, {$set:{status: "Leave of Absence"}}, function(err){ // Moved action from "creation of LOA" to "approval of LOA"
-        if(err) {
-            console.log(err);
-        }
-    });*/
+
     Leave.create({reason: req.body.reason, leaveDate: req.body.begindate, returnDate: req.body.enddate, ownerID: req.body.id, dateCreated: Date.now()}, function(err){
         if(err) {
             console.log(err);
@@ -73,6 +65,9 @@ router.post("/opcenter/loa", isLoggedIn, function(req, res){
 
 router.get("/opcenter/requests", isLoggedIn, function(req, res){
     if(req.user.role.num < 3) return res.redirect("/");
+
+    let User = require("../models/user")(res.locals.config);
+
     User.find({}, function(err,users){
        if(err) {
            console.log(err);
@@ -118,7 +113,8 @@ router.post("/opcenter/deleterequest/:id", isLoggedIn, function(req,res){
 });
 
 router.post("/opcenter/viewrequest/:id", isLoggedIn, function(req,res){
-    //if(req.user.role.num < 3) return res.redirect("/");
+    let User = require("../models/user")(res.locals.config);
+
     if(req.body.requestType === "Discharge" && req.user.role.num >= 3) {
         Discharge.findById(req.params.id, function(err, foundDischarge){
             if(err) {
@@ -206,7 +202,8 @@ router.post("/opcenter/application", isLoggedIn, function(req,res){
 });
 
 router.post("/opcenter/:id/", isLoggedIn, function(req,res){
-    //if(req.user.role.num < 3) return res.redirect("/");
+    let User = require("../models/user")(res.locals.config);
+
     if(req.body.requestType === "Leave") {
         if(req.body.approve === "1") {
             Leave.findByIdAndUpdate({_id: req.body.id}, {read: "Approved"}, function(err, doc){
@@ -257,7 +254,7 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
                 if(err) {
                     console.log(err);
                 }
-				User.findByIdAndUpdate({_id: doc.ownerID}, {$set:{status: "Active Duty", rank: config.ranks[1], role: {name: config.userGroups[1], num: 1}, steamProfile: doc.steamProfile, discordUsername: doc.discordUsername, age: doc.age, country: doc.country}}, function(err){
+				User.findByIdAndUpdate({_id: doc.ownerID}, {$set:{status: "Active Duty", rank: res.locals.config.ranks[1], role: {name: res.locals.config.userGroups[1], num: 1}, steamProfile: doc.steamProfile, discordUsername: doc.discordUsername, age: doc.age, country: doc.country}}, function(err){
 					if(err) {
 						console.log(err);
 					}
@@ -275,12 +272,12 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
 });
 
 router.get("/settings", isLoggedIn, function(req,res){
-    if(req.user.role.num !== 5) return res.redirect("/");
+    if(req.user.role.num < 4) return res.redirect("/");
     res.render("opcenter/settings");
 });
 
 router.post("/settings", isLoggedIn, function(req,res){
-    if(req.user.role.num < 5) return res.redirect("/");
+    if(req.user.role.num < 4) return res.redirect("/");
 
     let enableApplication = req.body.enableApplication;
     let websiteName = req.body.websiteName;
@@ -328,86 +325,123 @@ router.post("/settings", isLoggedIn, function(req,res){
         return res.redirect("/settings");
 	}		
 	
-    if((enableApplication === config.enableApplication)
-		&& (websiteName === config.websiteName)
-		&& (websiteSubtitle === config.websiteSubtitle)
-		&& (websiteLogo === config.websiteLogo)
-		&& (landingText === config.landingText)
-		&& (faq === config.faq)
-		&& (mailerEmail === config.mailerEmail)
-		&& (mailerPassword === config.mailerPassword)
-		&& (discordURL === config.discordURL)
-		&& (ts3URL === config.ts3URL)
-		&& (modlistURL === config.modlistURL)
-		&& (youtubeURL === config.youtubeURL)
-		&& (instagramURL === config.instagramURL)
-		&& (a3unitsURL === config.a3unitsURL)
-		&& (steamgroupURL === config.steamgroupURL)
-		&& (donateURL === config.donateURL)
-		&& (enableRetiredMembers === config.enableRetiredMembers)
-		&& (enableVisibility === config.enableVisibility)
-		&& (enableCallToAction === config.enableCallToAction)
-		&& (JSON.stringify(certifications) === JSON.stringify(config.certifications))
-		&& (JSON.stringify(carouselImages) === JSON.stringify(config.carouselImages))
-		&& (JSON.stringify(carouselTitles) === JSON.stringify(config.carouselTitles))
-		&& (JSON.stringify(resourceLinks) === JSON.stringify(config.resourceLinks))
-		&& (JSON.stringify(resourceTitles) === JSON.stringify(config.resourceTitles))
-		&& (JSON.stringify(tabs) === JSON.stringify(config.tabs))
-		&& (JSON.stringify(tabDesc) === JSON.stringify(config.tabDesc))
-		&& (JSON.stringify(awards) === JSON.stringify(config.awards))
-		&& (JSON.stringify(awardDesc) === JSON.stringify(config.awardDesc))
-		&& (JSON.stringify(roles) === JSON.stringify(config.roles))
-		&& (JSON.stringify(companies) === JSON.stringify(config.companies))
-		&& (JSON.stringify(squads) === JSON.stringify(config.squads))
-		&& (JSON.stringify(teams) === JSON.stringify(config.teams))
-		&& (JSON.stringify(sShops) === JSON.stringify(config.sShops))
-		&& (JSON.stringify(userGroups) === JSON.stringify(config.userGroups))
-		&& (JSON.stringify(ranks) === JSON.stringify(config.ranks))
-		&& (JSON.stringify(platoons) === JSON.stringify(config.platoons))) {
+    if((enableApplication === res.locals.config.enableApplication)
+		&& (websiteName === res.locals.config.websiteName)
+		&& (websiteSubtitle === res.locals.config.websiteSubtitle)
+		&& (websiteLogo === res.locals.config.websiteLogo)
+		&& (landingText === res.locals.config.landingText)
+		&& (faq === res.locals.config.faq)
+		&& (mailerEmail === res.locals.config.mailerEmail)
+		&& (mailerPassword === res.locals.config.mailerPassword)
+		&& (discordURL === res.locals.config.discordURL)
+		&& (ts3URL === res.locals.config.ts3URL)
+		&& (modlistURL === res.locals.config.modlistURL)
+		&& (youtubeURL === res.locals.config.youtubeURL)
+		&& (instagramURL === res.locals.config.instagramURL)
+		&& (a3unitsURL === res.locals.config.a3unitsURL)
+		&& (steamgroupURL === res.locals.config.steamgroupURL)
+		&& (donateURL === res.locals.config.donateURL)
+		&& (enableRetiredMembers === res.locals.config.enableRetiredMembers)
+		&& (enableVisibility === res.locals.config.enableVisibility)
+		&& (enableCallToAction === res.locals.config.enableCallToAction)
+		&& (JSON.stringify(certifications) === JSON.stringify(res.locals.config.certifications))
+		&& (JSON.stringify(carouselImages) === JSON.stringify(res.locals.config.carouselImages))
+		&& (JSON.stringify(carouselTitles) === JSON.stringify(res.locals.config.carouselTitles))
+		&& (JSON.stringify(resourceLinks) === JSON.stringify(res.locals.config.resourceLinks))
+		&& (JSON.stringify(resourceTitles) === JSON.stringify(res.locals.config.resourceTitles))
+		&& (JSON.stringify(tabs) === JSON.stringify(res.locals.config.tabs))
+		&& (JSON.stringify(tabDesc) === JSON.stringify(res.locals.config.tabDesc))
+		&& (JSON.stringify(awards) === JSON.stringify(res.locals.config.awards))
+		&& (JSON.stringify(awardDesc) === JSON.stringify(res.locals.config.awardDesc))
+		&& (JSON.stringify(roles) === JSON.stringify(res.locals.config.roles))
+		&& (JSON.stringify(companies) === JSON.stringify(res.locals.config.companies))
+		&& (JSON.stringify(squads) === JSON.stringify(res.locals.config.squads))
+		&& (JSON.stringify(teams) === JSON.stringify(res.locals.config.teams))
+		&& (JSON.stringify(sShops) === JSON.stringify(res.locals.config.sShops))
+		&& (JSON.stringify(userGroups) === JSON.stringify(res.locals.config.userGroups))
+		&& (JSON.stringify(ranks) === JSON.stringify(res.locals.config.ranks))
+		&& (JSON.stringify(platoons) === JSON.stringify(res.locals.config.platoons))) {
         req.flash('error', 'No changes to the settings have been made.');
         return res.redirect("/settings");
     }
 
-    config.enableApplication = enableApplication;
-    config.websiteName = websiteName;
-    config.websiteSubtitle = websiteSubtitle;
-    config.websiteLogo = websiteLogo;
-    config.landingText = landingText;
-    config.faq = faq;
-    config.mailerEmail = mailerEmail;
-    config.mailerPassword = mailerPassword;
-    config.discordURL = discordURL;
-    config.ts3URL = ts3URL;
-    config.modlistURL = modlistURL;
-    config.youtubeURL = youtubeURL;
-    config.instagramURL = instagramURL;
-    config.a3unitsURL = a3unitsURL;
-    config.steamgroupURL = steamgroupURL;
-    config.donateURL = donateURL;
-    config.enableRetiredMembers = enableRetiredMembers;
-    config.enableVisibility = enableVisibility;
-    config.enableCallToAction = enableCallToAction;
-    config.certifications = certifications;
-    config.carouselImages = carouselImages;
-    config.carouselTitles = carouselTitles;
-    config.resourceLinks = resourceLinks;
-    config.resourceTitles = resourceTitles;
-    config.tabs = tabs;
-    config.tabDesc = tabDesc;
-    config.awards = awards;
-    config.awardDesc = awardDesc;
-    config.roles = roles;
-    config.companies = companies;
-    config.platoons = platoons;
-    config.squads = squads;
-    config.teams = teams;
-    config.sShops = sShops;
-    config.ranks = ranks;
-    config.userGroups = userGroups;
+    res.locals.config.enableApplication = enableApplication;
+    res.locals.config.websiteName = websiteName;
+    res.locals.config.websiteSubtitle = websiteSubtitle;
+    res.locals.config.websiteLogo = websiteLogo;
+    res.locals.config.landingText = landingText;
+    res.locals.config.faq = faq;
+    res.locals.config.mailerEmail = mailerEmail;
+    res.locals.config.mailerPassword = mailerPassword;
+    res.locals.config.discordURL = discordURL;
+    res.locals.config.ts3URL = ts3URL;
+    res.locals.config.modlistURL = modlistURL;
+    res.locals.config.youtubeURL = youtubeURL;
+    res.locals.config.instagramURL = instagramURL;
+    res.locals.config.a3unitsURL = a3unitsURL;
+    res.locals.config.steamgroupURL = steamgroupURL;
+    res.locals.config.donateURL = donateURL;
+    res.locals.config.enableRetiredMembers = enableRetiredMembers;
+    res.locals.config.enableVisibility = enableVisibility;
+    res.locals.config.enableCallToAction = enableCallToAction;
+    res.locals.config.certifications = certifications;
+    res.locals.config.carouselImages = carouselImages;
+    res.locals.config.carouselTitles = carouselTitles;
+    res.locals.config.resourceLinks = resourceLinks;
+    res.locals.config.resourceTitles = resourceTitles;
+    res.locals.config.tabs = tabs;
+    res.locals.config.tabDesc = tabDesc;
+    res.locals.config.awards = awards;
+    res.locals.config.awardDesc = awardDesc;
+    res.locals.config.roles = roles;
+    res.locals.config.companies = companies;
+    res.locals.config.platoons = platoons;
+    res.locals.config.squads = squads;
+    res.locals.config.teams = teams;
+    res.locals.config.sShops = sShops;
+    res.locals.config.ranks = ranks;
+    res.locals.config.userGroups = userGroups;
 
-    fs.writeFile("./settings.json", JSON.stringify(config), function (err) {
+    res.locals.config.save({
+        enableApplication: enableApplication,
+        websiteName: websiteName,
+        websiteSubtitle: websiteSubtitle,
+        websiteLogo: websiteLogo,
+        landingText: landingText,
+        faq: faq,
+        mailerEmail: mailerEmail,
+        mailerPassword: mailerPassword,
+        discordURL: discordURL,
+        ts3URL: ts3URL,
+        modlistURL: modlistURL,
+        youtubeURL: youtubeURL,
+        instagramURL: instagramURL,
+        a3unitsURL: a3unitsURL,
+        steamgroupURL: steamgroupURL,
+        donateURL: donateURL,
+        enableRetiredMembers: enableRetiredMembers,
+        enableVisibility: enableVisibility,
+        enableCallToAction: enableCallToAction,
+        certifications: certifications,
+        carouselImages: carouselImages,
+        carouselTitles: carouselTitles,
+        resourceLinks: resourceLinks,
+        resourceTitles: resourceTitles,
+        tabs: tabs,
+        tabDesc: tabDesc,
+        awards: awards,
+        awardDesc: awardDesc,
+        roles: roles,
+        companies: companies,
+        platoons: platoons,
+        squads: squads,
+        teams: teams,
+        sShops: sShops,
+        ranks: ranks,
+        userGroups: userGroups
+    }, function(err, product) {
         if (err) return console.log(err);
-        console.log('writing to ' + configName);
+        console.log("Updated config to DB");
     });
 
     req.flash('success', 'Settings have been successfully updated.');

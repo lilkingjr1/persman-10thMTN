@@ -159,7 +159,9 @@
 											<td class="align-middle"><%=user.position%>, 
 											<!-- This is a super ghetto way to display position in numbers by searching for the number in the platoon/squad name, and also handling special platoons without number names. It can probably be done better, but its 2am and I don't feel like rewriting the whole sorting alg. to fix this small cosmetic problem. -->
 											<% if(platoons[i].squads[j] === "HQ" || platoons[i].squads[j] === "Headquarters") { %>
-												<% if((/(\d+)/).test(platoons[i].name)) { %>
+												<% if(platoons[i].name.includes("Aviation")) { %>
+													Knighthawks
+												<% } else if((/(\d+)/).test(platoons[i].name)) { %>
 													<%=config.companies%> <%=platoons[i].name.match(/(\d+)/)[0]%> Actual
 												<% } else { %>
 													<%=platoons[i].name%> Actual
@@ -333,10 +335,14 @@
 								<tr>
 									<td class="align-middle"><img src="/ranks/small/<%=user.rank.toLowerCase()%>.png" title="<%=user.rank%>"></td>
 									<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
-									<td class="align-middle"><%=user.unit.platoon%>, <%=user.unit.squad%>, <%=user.unit.team%></td>
+									<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
+										<td class="align-middle">Not Assigned</td>
+									<% } else { %>
+										<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
+									<% } %>
 									<td class="align-middle"><span class="<%=user.status%>"><%=user.status%></span></td>
 									<td class="align-middle"><%=user.role.name%></td>
-									<% if(permissionGroup >= 4) { %>
+									<% if(permissionGroup >= 4 && user.role.num < 5) { %>
 										<td class="align-middle">
 											<form action="/user/delete/<%=user._id%>" method="post">
 												<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete<%=num%>">
@@ -365,6 +371,8 @@
 												</div>
 											</form>
 										</td>
+									<% } else { %>
+										<td class="align-middle"></td>
 									<% } %>
 									<td class="align-middle">
 										<form action="/user/edit/<%=user._id%>" method="get">

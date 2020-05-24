@@ -2,11 +2,9 @@ const express = require("express"),
     router = express.Router(),
     passport = require("passport"),
     Calendar = require("../models/calendar"),
-    User = require("../models/user"),
     async = require("async"),
     nodemailer = require("nodemailer"),
-    crypto = require("crypto"),
-    config = require('../settings.json');
+    crypto = require("crypto");
 
 router.get("/", function(req, res){
     Calendar.find({}, function(err, allEvents){
@@ -40,6 +38,8 @@ router.post('/forgot', function(req, res, next) {
             });
         },
         function(token, done) {
+            let User = require("../models/user")(res.locals.config);
+
             User.findOne({ email: req.body.email }, function(err, user) {
                 if (!user) {
                     req.flash('error', 'No account with that email address exists.');
@@ -58,14 +58,14 @@ router.post('/forgot', function(req, res, next) {
             var smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
                 auth: {
-                    user: config.mailerEmail,
-                    pass: config.mailerPassword
+                    user: res.locals.config.mailerEmail,
+                    pass: res.locals.config.mailerPassword
                 }
             });
             var mailOptions = {
                 to: user.email,
-                from: config.mailerEmail,
-                subject: config.websiteName + ' - Password Reset',
+                from: res.locals.config.mailerEmail,
+                subject: res.locals.config.websiteName + ' - Password Reset',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
@@ -83,6 +83,8 @@ router.post('/forgot', function(req, res, next) {
 });
 
 router.get('/reset/:token', function(req, res) {
+    let User = require("../models/user")(res.locals.config);
+
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
             console.log("password token invalid");
@@ -96,6 +98,8 @@ router.get('/reset/:token', function(req, res) {
 router.post('/reset/:token', function(req, res) {
     async.waterfall([
         function(done) {
+            let User = require("../models/user")(res.locals.config);
+
             User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
                 if (!user) {
                     req.flash('error', 'Password reset token is invalid or has expired.');
@@ -122,14 +126,14 @@ router.post('/reset/:token', function(req, res) {
             var smtpTransport = nodemailer.createTransport({
                 service: 'Gmail',
                 auth: {
-                    user: config.mailerEmail,
-                    pass: config.mailerPassword
+                    user: res.locals.config.mailerEmail,
+                    pass: res.locals.config.mailerPassword
                 }
             });
             var mailOptions = {
                 to: user.email,
-                from: config.mailerEmail,
-                subject: config.websiteName + ' - Your password has been changed',
+                from: res.locals.config.mailerEmail,
+                subject: res.locals.config.websiteName + ' - Your password has been changed',
                 text: 'Hello,\n\n' +
                     'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
             };
@@ -148,8 +152,11 @@ router.post('/reset/:token', function(req, res) {
  });
  
  router.post("/register", function(req, res){
-     let role = {name:config.userGroups[0], num:0};
-     if(req.body.username === "Red-Thirten") role = {name: config.userGroups[5], num:5};
+     let role = {name:res.locals.config.userGroups[0], num:0};
+     if(req.body.username === "Red-Thirten") role = {name: res.locals.config.userGroups[5], num:5};
+
+    let User = require("../models/user")(res.locals.config);
+
      const newUser = new User({
          email: req.body.email,
          username: req.body.username,

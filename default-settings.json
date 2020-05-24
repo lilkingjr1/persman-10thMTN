@@ -1,0 +1,160 @@
+{  
+    "websiteName":"10th Mountain Division",
+    "websiteSubtitle":"Arma 3 Milsim Unit",
+    "landingText":"<center>\r\n<h2>About Us</h2>\r\n<br>\r\n<h5>Designated as a mountain warfare unit, this mil-sim unit specializes in combat for Alpine-like conditions. Dedicated to quality and teamwork, we hope prospective members will be interested in our direct-action activities across a variety of missions.</h5>\r\n<br>\r\n<h2>Biography</h2>\r\n<br>\r\n10th Mountain Division is a unit that was created by a member base that has been doing ArmA 3 mil-sim for upwards of 5 years. We've decided to establish ourselves as a unit in order to find other like minded people to become members of our active and tight-knit community. We're modeled off the United States Army 22nd Infantry Regiment and will be conducting operations that are comparable to our real-life counterpart. As a semi-fictional unit, we'll have the flexibility to participate in operations that are on going in the real-world, explore \"what-if\" scenarios, or create our own. \r\n<br><br>\r\nIf this sounds like something you're interested in and want to become a part of, submit an application and PLEASE JOIN either our <a href=\"https://discord.gg/zPmUpYU\" target=\"_blank\">Discord</a> or <a href=\"ts3server://ts.10thmtn.org\" target=\"_blank\">TeamSpeak</a> servers to find more information and to meet our members.\r\n<br><br>\r\n<h2>Climb to Glory!</h2>\r\n<br>\r\n<img src=\"/images/10th_logo_motto.png\">\r\n</center>",
+    "faq":"",
+    "resourceLinks":[
+       "https://docs.google.com/document/d/1m9pg61-rfC3yhndQZUIZAO7laRFHQlV82tQSg4j4OCw/edit?usp=sharing",
+       "https://docs.google.com/document/d/11DgFRLRKKL6cJNK99ru7hTNPqv4pafoo7uqs7gUDK1A/edit?usp=sharing"
+    ],
+    "resourceTitles":[
+       "Student SOP Manual",
+       "Community Guidelines"
+    ],
+    "mailerEmail":"",
+    "mailerPassword":"",
+    "websiteLogo":"/images/10th_logo.png",
+    "carouselImages":[
+       "/images/banner1.jpg",
+       "/images/banner2.jpg",
+       "/images/banner3.jpg",
+       "/images/banner4.jpg",
+       "/images/banner5.jpg",
+       "/images/banner6.jpg",
+       "/images/banner7.jpg",
+       "/images/banner8.jpg"
+    ],
+    "carouselTitles":[
+       "Arma 3 Milsim Mountain Warfare Unit",
+       "With 50+ members and growing our comunity continues to stay active and diverse.",
+       "Never a dull moment - Operations every Sunday and exercises throughout the week.",
+       "Friendly staff are always able and willing to support all player skill levels.",
+       "Join exciting/action packed missions that mix story and tactics for an immersive experience.",
+       "Climb to glory as 10th MTN will conquer any challenging terrain or environment.",
+       "Grow camaraderie and effective combat strategies with our well-trained members.",
+       "We look forward to seeing you on the battlefield! Enlist today to join a member base that has been doing ArmA 3 milsim for upwards of 5 years!"
+    ],
+    "modlistURL":"https://steamcommunity.com/sharedfiles/filedetails/?id=1975625031",
+    "a3unitsURL":"https://units.arma3.com/unit/10thmtn",
+    "steamgroupURL":"https://steamcommunity.com/groups/10thmtndivision",
+    "donateURL":"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RK8Y7WRHQTRL4&source=url",
+    "ts3URL":"ts.10thmtn.org",
+    "discordURL":"https://discordapp.com/invite/8BBDHMz",
+    "youtubeURL":"",
+    "instagramURL":"https://www.instagram.com/10thmtnarma/",
+    "enableApplication":"on",
+    "enableCallToAction":"on",
+    "enableRetiredMembers":"on",
+    "companies":[
+       "Anvil"
+    ],
+    "platoons":[
+       "Company HQ",
+       "2-10th Aviation Regiment",
+       "1st Platoon",
+       "2nd Platoon",
+       "Training Platoon",
+       "None"
+    ],
+    "squads":[
+       "Headquarters",
+       "1st Squad",
+       "2nd Squad",
+       "3rd Squad",
+       "4th Squad",
+       "Training",
+       "None"
+    ],
+    "teams":[
+       "Leadership",
+       "Alpha",
+       "Bravo",
+       "None"
+    ],
+    "sShops":[
+       "S-1",
+       "S-2",
+       "S-3",
+       "S-4",
+       "S-5"
+    ],
+    "ranks":[
+       "None",
+       "RCT",
+       "PVT",
+       "PV2",
+       "PFC",
+       "SPC",
+       "CPL",
+       "SGT",
+       "SSG",
+       "SFC",
+       "MSG",
+       "1SG",
+       "SGM",
+       "CSM",
+       "WOC",
+       "WO1",
+       "CW2",
+       "CW3",
+       "CW4",
+       "CW5",
+       "2LT",
+       "1LT",
+       "CPT"
+    ],
+    "roles":[
+       "Rifleman",
+       "Auto-Rifleman",
+       "Team Leader",
+       "Squad Leader",
+       "Platoon Sergeant",
+       "Platoon Leader",
+       "Company Leader",
+       "Game Master",
+       "Radio Operator",
+       "Pilot",
+       "Medic",
+       "None"
+    ],
+    "tabs":[
+       "Mountain",
+       "Ranger",
+       "Airborne"
+    ],
+    "tabDesc":[
+       "This tab is unique to the 10th MTN Div. and certifies that the wearer is qualified to traverse and navigate challenging mountainous and Alpine terrain.",
+       "Ranger School is one of the toughest training courses for which a Soldier can volunteer. Army Rangers are experts in leading Soldiers on difficult missions - and to do this they require rigorous training.",
+       "The purpose of the Airborne Tab is to qualify the volunteer in the use of the parachute as a means of combat deployment."
+    ],
+    "certifications":[
+       "Basic Combat Training",
+       "Airborne School",
+       "Pathfinder School",
+       "Air Assault School",
+       "Ranger School",
+       "Heavy AT Qualified",
+       "Advanced Explosives Qualified",
+       "Grenade Launcher Qualified",
+       "Combat Lifesaver",
+       "Basic Leader Course",
+       "Advanced Leader Course",
+       "RTO School",
+       "Designated Marksman"
+    ],
+    "awards":[
+       "Operation - Unstable Ground"
+    ],
+    "awardDesc":[
+       "Participated in 70% or more of Operation: Unstable Ground"
+    ],
+    "userGroups":[
+       "Guest",
+       "Enlisted",
+       "Instructor",
+       "Recruiter",
+       "Officer",
+       "Site Admin"
+    ],
+    "enableVisibility":"on"
+}

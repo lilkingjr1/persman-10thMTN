@@ -4,7 +4,6 @@ const express = require("express"),
     mongoose = require("mongoose"),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
-    User = require("./models/user"),
     authRoutes = require("./routes/index"),
     listUsersRoutes = require("./routes/listusers"),
     opCenterRoutes = require("./routes/opcenter"),
@@ -15,7 +14,7 @@ const express = require("express"),
     cookieParser = require("cookie-parser"),
     favicon = require('serve-favicon'),
     path = require('path'),
-    config = require('./settings.json');
+    Config = require("./models/settings");
 
 const NODE_PORT = process.env.NODE_PORT || 3000;
 const MONGO_IP = process.env.MONGO_IP || 'localhost';
@@ -31,37 +30,52 @@ app.use(favicon(path.join(__dirname, '.', 'public', 'favicon.ico')));
 
 //PASSPORT
 app.use(require("express-session")({
-   secret: "Motta sucks",
-   resave: false,
-   saveUninitialized: false
+    secret: "Motta sucks",
+    resave: false,
+    saveUninitialized: false
 }));
 
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+Config.find({}, function(err, result) {
+    if (err) throw err;
+    
+    var config;
+    if (result.length == 0) {
+        var DefaultConfig = new Config();
+        DefaultConfig.save();
 
-app.use(function(req, res, next){
-    res.locals.config = config;
-    res.locals.currentUser = req.user;
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-});
+        config = DefaultConfig;
+    } else
+        config = result[0];
 
-app.use(authRoutes);
-app.use(listUsersRoutes);
-app.use(opCenterRoutes);
-app.use(userRoutes);
-app.use(calendarRoutes);
+    let User = require("./models/user")(config);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-	res.status(404).render('404');
-});
+    app.use(flash());
+    app.use(passport.initialize());
+    app.use(passport.session());
+    passport.use(new LocalStrategy(User.authenticate()));
+    passport.serializeUser(User.serializeUser());
+    passport.deserializeUser(User.deserializeUser());
+    
+    app.use(function(req, res, next){
+        res.locals.config = config;
+        res.locals.currentUser = req.user;
+        res.locals.success = req.flash('success');
+        res.locals.error = req.flash('error');
+        next();
+    });
 
-app.listen(NODE_PORT, function(){
-   console.log("PERSMAN: ONLINE") ;
+    app.use(authRoutes);
+    app.use(listUsersRoutes);
+    app.use(opCenterRoutes);
+    app.use(userRoutes);
+    app.use(calendarRoutes);
+
+    // catch 404 and forward to error handler
+    app.use(function(req, res, next) {
+        res.status(404).render('404');
+    });
+    
+    app.listen(NODE_PORT, function(){
+        console.log("PERSMAN: ONLINE") ;
+    });
 });

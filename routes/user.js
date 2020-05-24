@@ -1,7 +1,10 @@
-const express = require("express"), router = express.Router(), passport = require("passport"),
-    User = require("../models/user"), config = require('../settings.json');
+const express = require("express"), 
+    router = express.Router(), 
+    passport = require("passport");
 
 router.get("/user/:id", isLoggedIn, function (req, res) {
+    let User = require("../models/user")(res.locals.config);
+
     User.findById(req.params.id, function (err, foundUser) {
         if (err) {
             console.log(err);
@@ -12,7 +15,10 @@ router.get("/user/:id", isLoggedIn, function (req, res) {
 });
 
 router.get("/user/edit/:id", isLoggedIn, function (req, res) {
-	if (req.user.role.num < 3) return res.redirect("/");
+    if (req.user.role.num < 3) return res.redirect("/");
+    
+    let User = require("../models/user")(res.locals.config);
+
     User.findById(req.params.id, function (err, foundUser) {
         if (err) {
             console.log(err);
@@ -24,10 +30,14 @@ router.get("/user/edit/:id", isLoggedIn, function (req, res) {
 
 router.post("/user/edit", isLoggedIn, function (req, res) {
     if (req.user.role.num < 3) return res.redirect("/");
+
     let userCerts = [];
     let userTabs = [];
     let userAwards = [];
     let userSShops = [];
+
+    let User = require("../models/user")(res.locals.config);
+
     User.find({_id: req.body.id}, function (err, user) {
         if (err) {
             console.log(err);
@@ -62,22 +72,22 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
         let roleNum = 0;
 		if(req.body.role !== undefined){
 			switch (req.body.role) {
-				case config.userGroups[0]:
+				case res.locals.config.userGroups[0]:
 					roleNum = 0;
 					break;
-				case config.userGroups[1]:
+				case res.locals.config.userGroups[1]:
 					roleNum = 1;
 					break;
-				case config.userGroups[2]:
+				case res.locals.config.userGroups[2]:
 					roleNum = 2;
 					break;
-				case config.userGroups[3]:
+				case res.locals.config.userGroups[3]:
 					roleNum = 3;
 					break;
-				case config.userGroups[4]:
+				case res.locals.config.userGroups[4]:
 					roleNum = 4;
 					break;
-				case config.userGroups[5]:
+				case res.locals.config.userGroups[5]:
 					roleNum = 5;
 					break;
 			}
@@ -118,6 +128,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
 
 router.post("/user/delete/:id", isLoggedIn, (req, res) => {
     if (req.user.role.num < 4) return res.redirect("/");
+
+    let User = require("../models/user")(res.locals.config);
+        
     User.findByIdAndDelete(req.params.id, err => {
         if (err) {
             res.redirect("/");
