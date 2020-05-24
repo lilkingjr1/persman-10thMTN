@@ -30,7 +30,7 @@ app.use(favicon(path.join(__dirname, '.', 'public', 'favicon.ico')));
 
 //PASSPORT
 app.use(require("express-session")({
-    secret: "Motta sucks",
+    secret: process.env.passportSecret,
     resave: false,
     saveUninitialized: false
 }));
