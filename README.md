@@ -1,8 +1,6 @@
-## PERSMAN
-#### A personnel management tool built with NodeJS, Express and MongoDB.
+## PERSMAN for 10th Mountain Division
+#### This is a custom fork of Lyon Jenkins' [PERSMAN](https://github.com/LyonJenkins/persman-archived), specially made for the 10th Mountain Division Arma Mil-Sim Unit
 
-This is a very much in development project. As such, a user guide is not available at this time. But, if you would like to look at an admittedly out of date version of the website, here you go https://www.youtube.com/watch?v=AxKYfj0BRo0. I will make a new version ASAP.
+This version contains specialized formatting and graphics specifically for the 10th Mountain Division. It is meant, for all intents and purposes, to be private and for this unit only.
 
-Recent features include a dark theme, and a customizable settings page with some basic settings, such as roles, certifications, available platoons and squads (which can be as many as you want). It currently only supports one company, but I am hoping to update and expand that too unlimited soon.
-
-Feel free to modify and change the application in anyway you want.
+If you would like a more generic version of this site, suitible for use by any unit, please check out my fork of the original project at https://github.com/lilkingjr1/persman

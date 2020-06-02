@@ -134,7 +134,7 @@ router.get("/calendar/events", isLoggedIn, function(req,res){
        if(err) {
            console.log(err);
        }
-       res.render("calendar/allevents", {events : foundEvents});
+       res.render("calendar/allevents", {events : foundEvents.reverse()});
     });
 });
 

@@ -34,8 +34,12 @@
         });
 
     </script>
-
-<div id='calendar'></div>
+	<% if(currentUser) { %>
+		<% if(currentUser.role.num >= 2) { %>
+			<a href="/calendar/event/" class="btn btn-success float-right ml-1">Create Event</a>
+		<% } %>
+	<% } %>
+	<div id='calendar'></div>
 </div>
 
 <% include ../partials/footer %>

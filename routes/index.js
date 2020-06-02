@@ -11,13 +11,17 @@ router.get("/", function(req, res){
         if(err) {
             console.log(err);
         }
-        let newEvents = [];
-        let place = allEvents.length;
-        while(place > allEvents.length-4) {
-            if(allEvents[place] !== undefined) newEvents.push(allEvents[place]);
-            place--;
-        }
-        res.render("landing", {events: newEvents});
+        if(allEvents.length !== 0) { // Prevent while loop looking at null
+			let today = new Date();
+			today.setHours(0,0,0,0); // Set time to 0 to allow all today's events (because they don't have a timestamp)
+			allEvents.sort((a, b) => new Date(a.start) - new Date(b.start)); // Sort event objects by the date property
+			while(today - new Date(allEvents[0].start) > 0) { // While event start date is before today...
+				allEvents.shift(); // ...pop it off the front of the array.
+				if(allEvents.length <= 0) break; // Break out if array becomes size 0 to prevent null
+			}
+			allEvents = allEvents.slice(0,3); // Strip array of all but the first 3 elements
+		}
+        res.render("landing", {events: allEvents});
     });
  });
 
@@ -66,7 +70,7 @@ router.post('/forgot', function(req, res, next) {
                 to: user.email,
                 from: res.locals.config.mailerEmail,
                 subject: res.locals.config.websiteName + ' - Password Reset',
-                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account: ' + user.username + '\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'

@@ -106,7 +106,6 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 rank: req.body.rank,
                 status: req.body.status,
                 position: req.body.position,
-                sShop: req.body.sShop,
                 unit: newUnit,
                 certifications: userCerts,
                 tabs: userTabs,
