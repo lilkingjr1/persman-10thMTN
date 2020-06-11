@@ -73,19 +73,155 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
             userSShops = req.body.sShops;
         }
 
-        /*if (JSON.stringify(userResult.certifications) !== JSON.stringify(userCerts)) {
-            for (var i=0; i<userResult.certifications.length; i++) {
+        if (JSON.stringify(userResult.certifications) !== JSON.stringify(userCerts)) {
+            if (userResult.certifications === null || userResult.certifications === undefined) {
+                if (userCerts !== null && userCerts !== undefined) {
+                    for (var i=0; i<userCerts.length; i++) {
+                        let newRecord = new ServiceRecord({
+                            userID: req.body.id,
+                            date: Date.now(),
+                            category: "Merits",
+                            description: userCerts[i] + " certified."
+                        });
+                        newRecord.save();
+                    }
+                }
+            } else if (userCerts === null || userCerts === undefined) {
+                if (userResult.certifications !== null && userResult.certifications !== undefined) {
+                    for (var i=0; i<userResult.certifications.length; i++) {
+                        let newRecord = new ServiceRecord({
+                            userID: req.body.id,
+                            date: Date.now(),
+                            category: "Merits",
+                            description: userResult.certifications[i] + " certification revoked."
+                        });
+                        newRecord.save();
+                    }
+                }
+            } else {
+                let differences = arrayDifference(userResult.certifications, userCerts)
+                
+                for (var i=0; i<differences[0].length; i++) {
+                    let newRecord = new ServiceRecord({
+                        userID: req.body.id,
+                        date: Date.now(),
+                        category: "Merits",
+                        description: differences[0][i] + " certification revoked."
+                    });
+                    newRecord.save();
+                }
 
+                for (var i=0; i<differences[1].length; i++) {
+                    let newRecord = new ServiceRecord({
+                        userID: req.body.id,
+                        date: Date.now(),
+                        category: "Merits",
+                        description: differences[1][i] + " certified."
+                    });
+                    newRecord.save();
+                }
             }
         }
 
         if (JSON.stringify(userResult.tabs) !== JSON.stringify(userTabs)) {
+            if (userResult.tabs === null || userResult.tabs === undefined) {
+                if (userTabs !== null && userTabs !== undefined) {
+                    for (var i=0; i<userTabs.length; i++) {
+                        let newRecord = new ServiceRecord({
+                            userID: req.body.id,
+                            date: Date.now(),
+                            category: "Merits",
+                            description: "Received " + userTabs[i] + " tab."
+                        });
+                        newRecord.save();
+                    }
+                }
+            } else if (userTabs === null || userTabs === undefined) {
+                if (userResult.tabs !== null && userResult.tabs !== undefined) {
+                    for (var i=0; i<userResult.tabs.length; i++) {
+                        let newRecord = new ServiceRecord({
+                            userID: req.body.id,
+                            date: Date.now(),
+                            category: "Merits",
+                            description: userResult.tabs[i] + " tab revoked."
+                        });
+                        newRecord.save();
+                    }
+                }
+            } else {
+                let differences = arrayDifference(userResult.tabs, userTabs)
+                
+                for (var i=0; i<differences[0].length; i++) {
+                    let newRecord = new ServiceRecord({
+                        userID: req.body.id,
+                        date: Date.now(),
+                        category: "Merits",
+                        description: differences[0][i] + " tab revoked."
+                    });
+                    newRecord.save();
+                }
 
+                for (var i=0; i<differences[1].length; i++) {
+                    let newRecord = new ServiceRecord({
+                        userID: req.body.id,
+                        date: Date.now(),
+                        category: "Merits",
+                        description: "Received " + differences[1][i] + " tab."
+                    });
+                    newRecord.save();
+                }
+            }
         }
 
         if (JSON.stringify(userResult.awards) !== JSON.stringify(userAwards)) {
+            if (userResult.awards === null || userResult.awards === undefined) {
+                if (userAwards !== null && userAwards !== undefined) {
+                    for (var i=0; i<userAwards.length; i++) {
+                        let newRecord = new ServiceRecord({
+                            userID: req.body.id,
+                            date: Date.now(),
+                            category: "Merits",
+                            description: "Given " + userAwards[i] + " award."
+                        });
+                        newRecord.save();
+                    }
+                }
+            } else if (userAwards === null || userAwards === undefined) {
+                if (userResult.awards !== null && userResult.awards !== undefined) {
+                    for (var i=0; i<userResult.awards.length; i++) {
+                        let newRecord = new ServiceRecord({
+                            userID: req.body.id,
+                            date: Date.now(),
+                            category: "Merits",
+                            description: userResult.awards[i] + " award revoked."
+                        });
+                        newRecord.save();
+                    }
+                }
+            } else {
+                let differences = arrayDifference(userResult.awards, userAwards)
+                
+                for (var i=0; i<differences[0].length; i++) {
+                    let newRecord = new ServiceRecord({
+                        userID: req.body.id,
+                        date: Date.now(),
+                        category: "Merits",
+                        description: differences[0][i] + " award revoked."
+                    });
+                    newRecord.save();
+                }
 
-        }*/
+                for (var i=0; i<differences[1].length; i++) {
+                    let newRecord = new ServiceRecord({
+                        userID: req.body.id,
+                        date: Date.now(),
+                        category: "Merits",
+                        description: "Given " + differences[1][i] + " award."
+                    });
+                    newRecord.save();
+                }
+            }
+        }
 
         let newUnit = {company: req.body.company, platoon: req.body.platoon, squad: req.body.squad, team: req.body.team};
 		if(req.body.status === "Reserve") {
@@ -247,6 +383,37 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     res.redirect("/login");
+}
+
+function arrayDifference(a1, a2) {
+    let temp = [], temp2 = [], difference = [], difference2 = [];
+
+    for (var i=0; i<a1.length; i++) {
+        temp[a1[i]] = true;
+    }
+    for (var i=0; i<a2.length; i++) {
+        temp2[a2[i]] = true;
+    }
+
+    for (var i=0; i<a2.length; i++) {
+        if (temp[a2[i]]) {
+            delete temp[a2[i]];
+        }
+    }
+    for (var i=0; i<a1.length; i++) {
+        if (temp2[a1[i]]) {
+            delete temp2[a1[i]];
+        }
+    }
+
+    for (var k in temp) {
+        difference.push(k);
+    }
+    for (var k in temp2) {
+        difference2.push(k);
+    }
+
+    return [difference, difference2];
 }
 
 module.exports = router;
