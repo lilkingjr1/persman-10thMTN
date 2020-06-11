@@ -365,7 +365,7 @@ router.post("/user/delete/:id", isLoggedIn, (req, res) => {
                         editor: req.user.username,
                         editorID: req.user._id,
                         editedUser: req.body.username,
-                        editedUserID: "",
+                        editedUserID: req.params.id,
                         editDate: Date.now(),
                         editDescription: "Deleted User"
                     });
