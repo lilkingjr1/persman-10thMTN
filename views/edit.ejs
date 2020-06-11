@@ -230,8 +230,9 @@
                 <option>Leave of Absence</option>
                 <option>Away Without Leave</option>
                 <option>Reserve</option>
-                <option>Retired</option>
-                <option>None</option>
+				<option>Retired</option>
+				<option>Discharged</option>
+				<option>None</option>
             </select>
         </div>
 		<% if(currentUser.role.num > user.role.num || currentUser.id === user.id || currentUser.role.num === 5) { %>
@@ -250,7 +251,8 @@
 			</div> 
 		<% } %>     
 
-        <input class="form-control" type="text" name="id" value="<%=user._id%>" hidden>
+		<input class="form-control" type="text" name="id" value="<%=user._id%>" hidden>
+		<input class="form-control" type="text" name="username" value="<%=user.username%>" hidden>
         <div class="form-group"><button class="btn btn-success" >Submit Changes</button></div>
     </form>
 </div>

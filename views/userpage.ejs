@@ -35,6 +35,11 @@
 				<a class="list-group-item list-group-item-action text-center" id="list-profiles" data-toggle="list" href="#profiles" role="tab" aria-controls="profiles">
 					<i class="fas fa-id-card fa-lg mr-2"></i>Profiles
 				</a>
+				<% if (serviceRecords.length > 0) { %>
+					<a class="list-group-item list-group-item-action text-center" id="list-service" data-toggle="list" href="#service" role="tab" aria-controls="service">
+						<i class="fas fa-clipboard fa-lg mr-2"></i>Service Record
+					</a>
+				<% } %>
 			</div>
 		</div>
 		<div class="col-9">
@@ -299,6 +304,175 @@
 							</ul>
 						</div>
 					</div>
+				</div>
+				<% if (serviceRecords.length > 0) { %>
+					<div class="tab-pane fade" id="service" role="tabpanel" aria-labelledby="list-service">
+						<div class="card">
+							<div class="card-header">
+								<h5>Service Record</h5>
+							</div>
+							<ul class="nav nav-tabs nav-justified" style="background-color: lightgrey" id="serviceRecordsTabs" role="tablist">
+								<li class="nav-item">
+									<a class="nav-link active" id="all-tab" data-toggle="tab" href="#alltab" role="tab" aria-controls="all"
+									aria-selected="true">All</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="rank-tab" data-toggle="tab" href="#ranktab" role="tab" aria-controls="rank"
+									aria-selected="false">Rank</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="mos-tab" data-toggle="tab" href="#mostab" role="tab" aria-controls="mos"
+									aria-selected="false">MOS</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="position-tab" data-toggle="tab" href="#positiontab" role="tab" aria-controls="position"
+									aria-selected="false">Position</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="status-tab" data-toggle="tab" href="#statustab" role="tab" aria-controls="status"
+									aria-selected="false">Status</a>
+								</li>
+								<% if(currentUser.role.num >= 3) { %>
+									<li class="nav-item">
+										<a class="nav-link" id="role-tab" data-toggle="tab" href="#roletab" role="tab" aria-controls="role"
+										aria-selected="false">Role</a>
+									</li>
+								<% } %>
+							</ul>
+							<div class="tab-content" id="serviceRecordsTabsContent">
+								<br>
+								<div class="tab-pane fade show active" id="alltab" role="tabpanel" aria-labelledby="all-tab">
+									<table class="table table-bordered table-sm text-center" align="left">
+										<thead>
+											<tr>
+												<th scope="col" style="width: 15%">Date</th>
+												<th scope="col" style="width: 75%">Service</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% serviceRecords.forEach(function(service) { %>
+												<% if (service.category == "Role") { %>
+													<% if (currentUser.role.num >= 3) { %>
+														<tr>
+															<td><%=service.date.toDateString()%></td>
+															<td><%=service.description%></td>
+														</tr>
+													<% } %>
+												<% } else { %>
+													<tr>
+														<td><%=service.date.toDateString()%></td>
+														<td><%=service.description%></td>
+													</tr>
+												<% } %>
+											<% }); %>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="ranktab" role="tabpanel" aria-labelledby="rank-tab">
+									<table class="table table-bordered table-sm text-center" align="left">
+										<thead>
+											<tr>
+												<th scope="col" style="width: 15%">Date</th>
+												<th scope="col" style="width: 75%">Service</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% serviceRecords.forEach(function(service) { %>
+												<% if (service.category == "Rank") { %>
+													<tr>
+														<td><%=service.date.toDateString()%></td>
+														<td><%=service.description%></td>
+													</tr>
+												<% } %>
+											<% }); %>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="mostab" role="tabpanel" aria-labelledby="mos-tab">
+									<table class="table table-bordered table-sm text-center" align="left">
+										<thead>
+											<tr>
+												<th scope="col" style="width: 15%">Date</th>
+												<th scope="col" style="width: 75%">Service</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% serviceRecords.forEach(function(service) { %>
+												<% if (service.category == "MOS") { %>
+													<tr>
+														<td><%=service.date.toDateString()%></td>
+														<td><%=service.description%></td>
+													</tr>
+												<% } %>
+											<% }); %>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="positiontab" role="tabpanel" aria-labelledby="position-tab">
+									<table class="table table-bordered table-sm text-center" align="left">
+										<thead>
+											<tr>
+												<th scope="col" style="width: 15%">Date</th>
+												<th scope="col" style="width: 75%">Service</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% serviceRecords.forEach(function(service) { %>
+												<% if (service.category == "Position") { %>
+													<tr>
+														<td><%=service.date.toDateString()%></td>
+														<td><%=service.description%></td>
+													</tr>
+												<% } %>
+											<% }); %>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="statustab" role="tabpanel" aria-labelledby="status-tab">
+									<table class="table table-bordered table-sm text-center" align="left">
+										<thead>
+											<tr>
+												<th scope="col" style="width: 15%">Date</th>
+												<th scope="col" style="width: 75%">Service</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% serviceRecords.forEach(function(service) { %>
+												<% if (service.category == "Status") { %>
+													<tr>
+														<td><%=service.date.toDateString()%></td>
+														<td><%=service.description%></td>
+													</tr>
+												<% } %>
+											<% }); %>
+										</tbody>
+									</table>
+								</div>
+								<% if(currentUser.role.num >= 3) { %>
+									<div class="tab-pane fade" id="roletab" role="tabpanel" aria-labelledby="role-tab">
+										<table class="table table-bordered table-sm text-center" align="left">
+											<thead>
+												<tr>
+													<th scope="col" style="width: 15%">Date</th>
+													<th scope="col" style="width: 75%">Service</th>
+												</tr>
+											</thead>
+											<tbody>
+												<% serviceRecords.forEach(function(service) { %>
+													<% if (service.category == "Role") { %>
+														<tr>
+															<td><%=service.date.toDateString()%></td>
+															<td><%=service.description%></td>
+														</tr>
+													<% } %>
+												<% }); %>
+											</tbody>
+										</table>
+									</div>
+								<% } %>
+							</div>
+						</div>
+					<% } %>
 				</div>
 			</div>
 		</div>

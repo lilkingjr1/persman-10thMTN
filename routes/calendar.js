@@ -16,16 +16,19 @@ router.get("/calendar", isVisible, function(req, res){
 
 router.get("/calendar/event/:id", isVisible, function(req, res){
     Calendar.findById(req.params.id, function(err, foundEvent){
-        if(err) {
+        if (err) {
             console.log(err);
+            return res.redirect("/404/");
+        } else {
+            Event.find({eventID: foundEvent._id}, function(err, foundSpecifics){
+                if(err) {
+                    console.log(err);
+                    return res.redirect("/404/");
+                } else {
+                    res.render("calendar/viewevent",{event: foundEvent, list: foundSpecifics[0].attendingList, user:req.user});
+                }
+            });
         }
-        Event.find({eventID: foundEvent._id}, function(err, foundSpecifics){
-            if(err) {
-                console.log(err);
-            } else {
-                res.render("calendar/viewevent",{event: foundEvent, list: foundSpecifics[0].attendingList, user:req.user});
-            }
-        });
     });
 });
 

@@ -4,7 +4,8 @@ const express = require("express"),
     Leave = require("../models/loa"),
     async = require("async"),
     Application = require("../models/application"),
-    Comment = require("../models/comment");
+    EditLog = require("../models/editlog"),
+    ServiceRecord = require("../models/servicerecord");
 
 router.get("/opcenter", isLoggedIn, function(req, res){
    res.render("opcenter/opcenter", {submitted: 0});
@@ -81,7 +82,7 @@ router.get("/opcenter/requests", isLoggedIn, function(req, res){
                    console.log(err);
                }
                Application.find({}, function(err, apps){
-                   res.render("opcenter/requests", {users: users, discharges:discharges, loas:leaves, applications:apps})
+                   res.render("opcenter/requests", {users: users, discharges:discharges.sort((a, b) => b.dateCreated - a.dateCreated), leaves:leaves.sort((a, b) => b.dateCreated - a.dateCreated), applications:apps.sort((a, b) => b.dateCreated - a.dateCreated)})
                })
            })
        });
@@ -210,6 +211,15 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
                 if(err) {
                     console.log(err);
                 }
+
+                let newRecord = new ServiceRecord({
+                    userID: doc.ownerID,
+                    date: Date.now(),
+                    category: "Status",
+                    description: "Status changed to Leave of Absence."
+                });
+                newRecord.save();
+
 				User.findByIdAndUpdate({_id: doc.ownerID}, {$set:{status: "Leave of Absence"}}, function(err){
 					if(err) {
 						console.log(err);
@@ -234,6 +244,15 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
                             console.log(err);
                         }
                     });
+
+                    let newRecord = new ServiceRecord({
+                        userID: foundDischarge.ownerID,
+                        date: Date.now(),
+                        category: "Status",
+                        description: "Status changed to Retired."
+                    });
+                    newRecord.save();
+
                     User.findOneAndUpdate({_id: foundDischarge.ownerID}, {$set:{status:"Retired", unit: {company: "none", platoon: "none", squad:"none", team:"none"}, rank:"none"}}, function(err){
                         if(err) {
                             console.log(err);
@@ -254,6 +273,15 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
                 if(err) {
                     console.log(err);
                 }
+
+                let newRecord = new ServiceRecord({
+                    userID: doc.ownerID,
+                    date: Date.now(),
+                    category: "Status",
+                    description: "Joined the unit."
+                });
+                newRecord.save();
+
 				User.findByIdAndUpdate({_id: doc.ownerID}, {$set:{status: "Active Duty", rank: res.locals.config.ranks[1], role: {name: res.locals.config.userGroups[1], num: 1}, steamProfile: doc.steamProfile, discordUsername: doc.discordUsername, age: doc.age, country: doc.country}}, function(err){
 					if(err) {
 						console.log(err);
@@ -446,6 +474,18 @@ router.post("/settings", isLoggedIn, function(req,res){
 
     req.flash('success', 'Settings have been successfully updated.');
     res.redirect("/settings");
+});
+
+router.get("/opcenter/logs", isLoggedIn, function(req, res) {
+    if(req.user.role.num < 4) return res.redirect("/");
+
+    EditLog.find({}, function(err, allLogs) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("opcenter/logs", {logs: allLogs});
+        }
+    });
 });
 
 function isLoggedIn(req,res,next){

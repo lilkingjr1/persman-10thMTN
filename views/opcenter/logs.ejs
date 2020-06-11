@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<div class="container shadow mt-3 mb-5 p-3 white">
+    <h1>Edit Logs</h1>
+    <hr>
+    <table class="table table-bordered table-sm text-center">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 10%">Date</th>
+				<th scope="col" style="width: 15%">Editor</th>
+				<th scope="col" style="width: 15%">User Affected</th>
+				<th scope="col" style="width: 50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% logs.forEach(function(log) { %>
+                <tr>
+                    <td class="align-middle"><%=log.editDate.toDateString()%></td>
+                    <td class="align-middle"><a href="/user/<%=log.editorID%>"><%=log.editor%></a></td>
+                    <td class="align-middle"><a href="/user/<%=log.editedUserID%>"><%=log.editedUser%></a></td>
+                    <td class="align-middle"><%=log.editDescription%></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<div class="fixed-bottom">
+<% include ../partials/footer %>

@@ -138,6 +138,18 @@
 					</div>
 				</div>
 			<% } %>
+			<% if (currentUser.role.num >= 4) { %>
+				<div class="card text-center" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title"><strong>View Logs</strong></h5>
+						<p class="card-text">View all logs.</p>
+						<a href="/opcenter/logs" class="card-btn btn btn-primary">View Logs</a>
+					</div>
+					<div class="card-footer">
+						<small>Only <%=config.userGroups[4]%>s and above have access to this.</small>
+					</div>
+				</div>
+			<% } %>
         </div>
     </div>
 <% } %>
