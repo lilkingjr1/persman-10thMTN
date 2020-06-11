@@ -321,6 +321,10 @@
 									aria-selected="false">Rank</a>
 								</li>
 								<li class="nav-item">
+									<a class="nav-link" id="merits-tab" data-toggle="tab" href="#meritstab" role="tab" aria-controls="merits"
+									aria-selected="false">Merits</a>
+								</li>
+								<li class="nav-item">
 									<a class="nav-link" id="mos-tab" data-toggle="tab" href="#mostab" role="tab" aria-controls="mos"
 									aria-selected="false">MOS</a>
 								</li>
@@ -379,6 +383,26 @@
 										<tbody>
 											<% serviceRecords.forEach(function(service) { %>
 												<% if (service.category == "Rank") { %>
+													<tr>
+														<td><%=service.date.toDateString()%></td>
+														<td><%=service.description%></td>
+													</tr>
+												<% } %>
+											<% }); %>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="meritstab" role="tabpanel" aria-labelledby="merits-tab">
+									<table class="table table-bordered table-sm text-center" align="left">
+										<thead>
+											<tr>
+												<th scope="col" style="width: 15%">Date</th>
+												<th scope="col" style="width: 75%">Service</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% serviceRecords.forEach(function(service) { %>
+												<% if (service.category == "Merits") { %>
 													<tr>
 														<td><%=service.date.toDateString()%></td>
 														<td><%=service.description%></td>
