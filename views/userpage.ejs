@@ -23,7 +23,11 @@
 	<div class="row">
 		<div class="col-3">
 			<div class="list-group" id="list-tab" role="tablist">
-				<a class="list-group-item list-group-item-action text-center active" id="list-general" data-toggle="list" href="#general" role="tab" aria-controls="general">
+				<% if (viewRecords == false || serviceRecords.length == 0) { %>
+					<a class="list-group-item list-group-item-action text-center active" id="list-general" data-toggle="list" href="#general" role="tab" aria-controls="general">
+				<% } else { %>
+					<a class="list-group-item list-group-item-action text-center" id="list-general" data-toggle="list" href="#general" role="tab" aria-controls="general">
+				<% } %>
 					<i class="fas fa-user fa-lg mr-2"></i>General
 				</a>
 				<a class="list-group-item list-group-item-action text-center" id="list-position" data-toggle="list" href="#position" role="tab" aria-controls="position">
@@ -36,7 +40,11 @@
 					<i class="fas fa-id-card fa-lg mr-2"></i>Profiles
 				</a>
 				<% if (serviceRecords.length > 0) { %>
-					<a class="list-group-item list-group-item-action text-center" id="list-service" data-toggle="list" href="#service" role="tab" aria-controls="service">
+					<% if (viewRecords != false) { %>
+						<a class="list-group-item list-group-item-action text-center active" id="list-service" data-toggle="list" href="#service" role="tab" aria-controls="service">
+					<% } else { %>
+						<a class="list-group-item list-group-item-action text-center" id="list-service" data-toggle="list" href="#service" role="tab" aria-controls="service">
+					<% } %>
 						<i class="fas fa-clipboard fa-lg mr-2"></i>Service Record
 					</a>
 				<% } %>
@@ -44,7 +52,11 @@
 		</div>
 		<div class="col-9">
 			<div class="tab-content" id="nav-tabContent">
-				<div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="list-general">
+				<% if (viewRecords == false || serviceRecords.length == 0) { %>
+					<div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="list-general">
+				<% } else { %>
+					<div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="list-general">
+				<% } %>
 					<div class="card mb-2">
 						<h5 class="card-header">Basic Information</h5>
 						<div class="card-body">
@@ -306,40 +318,79 @@
 					</div>
 				</div>
 				<% if (serviceRecords.length > 0) { %>
-					<div class="tab-pane fade" id="service" role="tabpanel" aria-labelledby="list-service">
+					<% if (viewRecords != false) { %>
+						<div class="tab-pane fade show active" id="service" role="tabpanel" aria-labelledby="list-service">
+					<% } else { %>
+						<div class="tab-pane fade" id="service" role="tabpanel" aria-labelledby="list-service">
+					<% } %>
 						<div class="card">
 							<div class="card-header">
 								<h5>Service Record</h5>
 							</div>
 							<ul class="nav nav-tabs nav-justified" style="background-color: lightgrey" id="serviceRecordsTabs" role="tablist">
 								<li class="nav-item">
-									<a class="nav-link active" id="all-tab" data-toggle="tab" href="#alltab" role="tab" aria-controls="all"
-									aria-selected="true">All</a>
+									<% if (viewRecords == false || viewRecords == "All") { %>
+										<a class="nav-link active" id="all-tab" href="/user/<%=user.id%>/records/all?page=1" role="tab" aria-controls="all"
+										aria-selected="true">All</a>
+									<% } else { %>
+										<a class="nav-link" id="all-tab" href="/user/<%=user.id%>/records/all?page=1" role="tab" aria-controls="all"
+										aria-selected="false">All</a>
+									<% } %>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" id="rank-tab" data-toggle="tab" href="#ranktab" role="tab" aria-controls="rank"
-									aria-selected="false">Rank</a>
+									<% if (viewRecords == "Rank") { %>
+										<a class="nav-link active" id="rank-tab" href="/user/<%=user.id%>/records/rank?page=1" role="tab" aria-controls="rank"
+										aria-selected="true">Rank</a>
+									<% } else { %>
+										<a class="nav-link" id="rank-tab" href="/user/<%=user.id%>/records/rank?page=1" role="tab" aria-controls="rank"
+										aria-selected="false">Rank</a>
+									<% } %>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" id="merits-tab" data-toggle="tab" href="#meritstab" role="tab" aria-controls="merits"
-									aria-selected="false">Merits</a>
+									<% if (viewRecords == "Merits") { %>
+										<a class="nav-link active" id="merits-tab" href="/user/<%=user.id%>/records/merits?page=1" role="tab" aria-controls="merits"
+										aria-selected="true">Merits</a>
+									<% } else { %>
+										<a class="nav-link" id="merits-tab" href="/user/<%=user.id%>/records/merits?page=1" role="tab" aria-controls="merits"
+										aria-selected="false">Merits</a>
+									<% } %>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" id="mos-tab" data-toggle="tab" href="#mostab" role="tab" aria-controls="mos"
-									aria-selected="false">MOS</a>
+									<% if (viewRecords == "MOS") { %>
+										<a class="nav-link active" id="mos-tab" href="/user/<%=user.id%>/records/mos?page=1" role="tab" aria-controls="mos"
+											aria-selected="true">MOS</a>
+									<% } else { %>
+										<a class="nav-link" id="mos-tab" href="/user/<%=user.id%>/records/mos?page=1" role="tab" aria-controls="mos"
+										aria-selected="false">MOS</a>
+									<% } %>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" id="position-tab" data-toggle="tab" href="#positiontab" role="tab" aria-controls="position"
-									aria-selected="false">Position</a>
+									<% if (viewRecords == "Position") { %>
+										<a class="nav-link active" id="position-tab" href="/user/<%=user.id%>/records/position?page=1" role="tab" aria-controls="position"
+										aria-selected="true">Position</a>
+									<% } else { %>
+										<a class="nav-link" id="position-tab" href="/user/<%=user.id%>/records/position?page=1" role="tab" aria-controls="position"
+										aria-selected="false">Position</a>
+									<% } %>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" id="status-tab" data-toggle="tab" href="#statustab" role="tab" aria-controls="status"
-									aria-selected="false">Status</a>
+									<% if (viewRecords == "Status") { %>
+										<a class="nav-link active" id="status-tab" href="/user/<%=user.id%>/records/status?page=1" role="tab" aria-controls="status"
+										aria-selected="true">Status</a>
+									<% } else { %>
+										<a class="nav-link" id="status-tab" href="/user/<%=user.id%>/records/status?page=1" role="tab" aria-controls="status"
+										aria-selected="false">Status</a>
+									<% } %>
 								</li>
 								<% if(currentUser.role.num >= 3) { %>
 									<li class="nav-item">
-										<a class="nav-link" id="role-tab" data-toggle="tab" href="#roletab" role="tab" aria-controls="role"
-										aria-selected="false">Role</a>
+										<% if (viewRecords == "Role") { %>
+											<a class="nav-link active" id="role-tab" href="/user/<%=user.id%>/records/role?page=1" role="tab" aria-controls="role"
+											aria-selected="true">Role</a>
+										<% } else { %>
+											<a class="nav-link" id="role-tab" href="/user/<%=user.id%>/records/role?page=1" role="tab" aria-controls="role"
+											aria-selected="false">Role</a>
+										<% } %>
 									</li>
 								<% } %>
 							</ul>
@@ -359,142 +410,50 @@
 													<% if (currentUser.role.num >= 3) { %>
 														<tr>
 															<td><%=service.date.toDateString()%></td>
-															<td><%=service.description%></td>
+															<td>Role changed to <b><%=service.item%></b>.</td>
 														</tr>
 													<% } %>
 												<% } else { %>
 													<tr>
 														<td><%=service.date.toDateString()%></td>
-														<td><%=service.description%></td>
+														<% if (service.category == "Rank") { %>
+															<td>Rank changed to <b><%=service.item%></b>.</td>
+														<% } else if (service.category == "Merits") { %>
+															<% if (service.subCategory == "Certifications") { %>
+																<% if (service.granted == true) { %>
+																	<td><b><%=service.item%></b> certified.</td>
+																<% } else { %>
+																	<td><b><%=service.item%></b> certification revoked.</td>
+																<% } %>
+															<% } else if (service.subCategory == "Tabs") { %>
+																<% if (service.granted == true) { %>
+																	<td>Received <b><%=service.item%></b> tab.</td>
+																<% } else { %>
+																	<td><b><%=service.item%></b> tab revoked.</td>
+																<% } %>
+															<% } else if (service.subCategory == "Awards") { %>
+																<% if (service.granted == true) { %>
+																	<td>Given <b><%=service.item%></b> award.</td>
+																<% } else { %>
+																	<td><b><%=service.item%></b> award revoked.</td>
+																<% } %>
+															<% } %>
+														<% } else if (service.category == "MOS") { %>
+															<td>MOS changed to <b><%=service.item%></b>.</td>
+														<% } else if (service.category == "Position") { %>
+															<% let positionPieces = service.item.split(","); %>
+															<td>Position changed to <b><%=positionPieces[0]%> Company</b>, <b><%=positionPieces[1]%></b>, <b><%=positionPieces[2]%></b>, <b><%=positionPieces[3]%> Team</b>.</td>
+														<% } else if (service.category == "Status") { %>
+															<td>Status changed to <b><%=service.item%></b>.</td>
+														<% } %>
 													</tr>
 												<% } %>
 											<% }); %>
 										</tbody>
 									</table>
 								</div>
-								<div class="tab-pane fade" id="ranktab" role="tabpanel" aria-labelledby="rank-tab">
-									<table class="table table-bordered table-sm text-center" align="left">
-										<thead>
-											<tr>
-												<th scope="col" style="width: 15%">Date</th>
-												<th scope="col" style="width: 75%">Service</th>
-											</tr>
-										</thead>
-										<tbody>
-											<% serviceRecords.forEach(function(service) { %>
-												<% if (service.category == "Rank") { %>
-													<tr>
-														<td><%=service.date.toDateString()%></td>
-														<td><%=service.description%></td>
-													</tr>
-												<% } %>
-											<% }); %>
-										</tbody>
-									</table>
-								</div>
-								<div class="tab-pane fade" id="meritstab" role="tabpanel" aria-labelledby="merits-tab">
-									<table class="table table-bordered table-sm text-center" align="left">
-										<thead>
-											<tr>
-												<th scope="col" style="width: 15%">Date</th>
-												<th scope="col" style="width: 75%">Service</th>
-											</tr>
-										</thead>
-										<tbody>
-											<% serviceRecords.forEach(function(service) { %>
-												<% if (service.category == "Merits") { %>
-													<tr>
-														<td><%=service.date.toDateString()%></td>
-														<td><%=service.description%></td>
-													</tr>
-												<% } %>
-											<% }); %>
-										</tbody>
-									</table>
-								</div>
-								<div class="tab-pane fade" id="mostab" role="tabpanel" aria-labelledby="mos-tab">
-									<table class="table table-bordered table-sm text-center" align="left">
-										<thead>
-											<tr>
-												<th scope="col" style="width: 15%">Date</th>
-												<th scope="col" style="width: 75%">Service</th>
-											</tr>
-										</thead>
-										<tbody>
-											<% serviceRecords.forEach(function(service) { %>
-												<% if (service.category == "MOS") { %>
-													<tr>
-														<td><%=service.date.toDateString()%></td>
-														<td><%=service.description%></td>
-													</tr>
-												<% } %>
-											<% }); %>
-										</tbody>
-									</table>
-								</div>
-								<div class="tab-pane fade" id="positiontab" role="tabpanel" aria-labelledby="position-tab">
-									<table class="table table-bordered table-sm text-center" align="left">
-										<thead>
-											<tr>
-												<th scope="col" style="width: 15%">Date</th>
-												<th scope="col" style="width: 75%">Service</th>
-											</tr>
-										</thead>
-										<tbody>
-											<% serviceRecords.forEach(function(service) { %>
-												<% if (service.category == "Position") { %>
-													<tr>
-														<td><%=service.date.toDateString()%></td>
-														<td><%=service.description%></td>
-													</tr>
-												<% } %>
-											<% }); %>
-										</tbody>
-									</table>
-								</div>
-								<div class="tab-pane fade" id="statustab" role="tabpanel" aria-labelledby="status-tab">
-									<table class="table table-bordered table-sm text-center" align="left">
-										<thead>
-											<tr>
-												<th scope="col" style="width: 15%">Date</th>
-												<th scope="col" style="width: 75%">Service</th>
-											</tr>
-										</thead>
-										<tbody>
-											<% serviceRecords.forEach(function(service) { %>
-												<% if (service.category == "Status") { %>
-													<tr>
-														<td><%=service.date.toDateString()%></td>
-														<td><%=service.description%></td>
-													</tr>
-												<% } %>
-											<% }); %>
-										</tbody>
-									</table>
-								</div>
-								<% if(currentUser.role.num >= 3) { %>
-									<div class="tab-pane fade" id="roletab" role="tabpanel" aria-labelledby="role-tab">
-										<table class="table table-bordered table-sm text-center" align="left">
-											<thead>
-												<tr>
-													<th scope="col" style="width: 15%">Date</th>
-													<th scope="col" style="width: 75%">Service</th>
-												</tr>
-											</thead>
-											<tbody>
-												<% serviceRecords.forEach(function(service) { %>
-													<% if (service.category == "Role") { %>
-														<tr>
-															<td><%=service.date.toDateString()%></td>
-															<td><%=service.description%></td>
-														</tr>
-													<% } %>
-												<% }); %>
-											</tbody>
-										</table>
-									</div>
-								<% } %>
 							</div>
+							<%- recordsPagination %>
 						</div>
 					<% } %>
 				</div>

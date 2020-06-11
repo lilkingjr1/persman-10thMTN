@@ -2,7 +2,10 @@ const express = require("express"),
     router = express.Router(), 
     passport = require("passport"),
     EditLog = require("../models/editlog"),
-    ServiceRecord = require("../models/servicerecord");
+    ServiceRecord = require("../models/servicerecord"),
+    Pagination = require("pagination");
+
+let perPage = 10;
 
 router.get("/user/:id", isLoggedIn, function (req, res) {
     let User = require("../models/user")(res.locals.config);
@@ -13,7 +16,184 @@ router.get("/user/:id", isLoggedIn, function (req, res) {
             return res.redirect("/404/");
         } else {
             ServiceRecord.find({userID: req.params.id}, function(err, serviceRecords) {
-                res.render("userpage", {user: foundUser, serviceRecords: serviceRecords.sort((a, b) => b.date - a.date)});
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/all", current: 1, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(0, perPage), viewRecords: false, recordsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/user/:id/records/all", isLoggedIn, function (req, res) {
+    let User = require("../models/user")(res.locals.config);
+
+    User.findById(req.params.id, function (err, foundUser) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/404/");
+        } else {
+            ServiceRecord.find({userID: req.params.id}, function(err, serviceRecords) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/all", current: page, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(startPoint, startPoint + perPage), viewRecords: "All", recordsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/user/:id/records/rank", isLoggedIn, function (req, res) {
+    let User = require("../models/user")(res.locals.config);
+
+    User.findById(req.params.id, function (err, foundUser) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/404/");
+        } else {
+            ServiceRecord.find({userID: req.params.id, category: "Rank"}, function(err, serviceRecords) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/rank", current: page, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(startPoint, startPoint + perPage), viewRecords: "Rank", recordsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/user/:id/records/merits", isLoggedIn, function (req, res) {
+    let User = require("../models/user")(res.locals.config);
+
+    User.findById(req.params.id, function (err, foundUser) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/404/");
+        } else {
+            ServiceRecord.find({userID: req.params.id, category: "Merits"}, function(err, serviceRecords) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/merits", current: page, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(startPoint, startPoint + perPage), viewRecords: "Merits", recordsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/user/:id/records/mos", isLoggedIn, function (req, res) {
+    let User = require("../models/user")(res.locals.config);
+
+    User.findById(req.params.id, function (err, foundUser) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/404/");
+        } else {
+            ServiceRecord.find({userID: req.params.id, category: "MOS"}, function(err, serviceRecords) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/mos", current: page, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(startPoint, startPoint + perPage), viewRecords: "MOS", recordsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/user/:id/records/position", isLoggedIn, function (req, res) {
+    let User = require("../models/user")(res.locals.config);
+
+    User.findById(req.params.id, function (err, foundUser) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/404/");
+        } else {
+            ServiceRecord.find({userID: req.params.id, category: "Position"}, function(err, serviceRecords) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/position", current: page, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(startPoint, startPoint + perPage), viewRecords: "Position", recordsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/user/:id/records/status", isLoggedIn, function (req, res) {
+    let User = require("../models/user")(res.locals.config);
+
+    User.findById(req.params.id, function (err, foundUser) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/404/");
+        } else {
+            ServiceRecord.find({userID: req.params.id, category: "Status"}, function(err, serviceRecords) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/status", current: page, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(startPoint, startPoint + perPage), viewRecords: "Status", recordsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/user/:id/records/role", isLoggedIn, function (req, res) {
+    if (req.user.role.num < 3) return res.redirect("/user/" + req.params.id);
+
+    let User = require("../models/user")(res.locals.config);
+
+    User.findById(req.params.id, function (err, foundUser) {
+        if (err) {
+            console.log(err);
+            return res.redirect("/404/");
+        } else {
+            ServiceRecord.find({userID: req.params.id, category: "Role"}, function(err, serviceRecords) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/");
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedRecords = serviceRecords.sort((a, b) => b.date - a.date);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/user/" + req.params.id + "/records/role", current: page, rowsPerPage: perPage, totalResult: sortedRecords.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("userpage", {user: foundUser, serviceRecords: sortedRecords.slice(startPoint, startPoint + perPage), viewRecords: "Role", recordsPagination: pagination.render()});
+                }
             });
         }
     });
@@ -438,6 +618,33 @@ function arrayDifference(a1, a2) {
     }
 
     return [difference, difference2];
+}
+
+function paginationTemplate(result) {
+    var i, len, prelink;
+    var html = '<div><ul class="pagination justify-content-center">';
+    if (result.pageCount < 2) {
+        html += '</ul></div>';
+        return html;
+    }
+    prelink = this.preparePreLink(result.prelink);
+    if (result.previous) {
+        html += '<li class="page-item"><a class="page-link" href="' + prelink + result.previous + '">' + this.options.translator('PREVIOUS') + '</a></li>';
+    }
+    if (result.range.length) {
+        for (i=0, len=result.range.length; i<len; i++) {
+            if (result.range[i] === result.current) {
+                html += '<li class="active page-item"><a class="page-link" href="' + prelink + result.range[i] + '">' + result.range[i] + '</a></li>';
+            } else {
+                html += '<li class="page-item"><a class="page-link" href="' + prelink + result.range[i] + '">' + result.range[i] + '</a></li>';
+            }
+        }
+    }
+    if (result.next) {
+        html += '<li class="page-item"><a class="page-link" href="' + prelink + result.next + '" class="paginator-next">' + this.options.translator('NEXT') + '</a></li>';
+    }
+    html += '</ul></div>';
+    return html;
 }
 
 module.exports = router;
