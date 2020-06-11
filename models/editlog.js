@@ -6,7 +6,7 @@ const editLog = new mongoose.Schema({
     editedUser: String,
     editedUserID: Object,
     editDate: Date,
-    editDescription: String
+    editType: String
 });
 
 module.exports = mongoose.model("Edit", editLog);
