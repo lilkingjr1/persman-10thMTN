@@ -81,7 +81,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             userID: req.body.id,
                             date: Date.now(),
                             category: "Merits",
-                            description: userCerts[i] + " certified."
+                            subCategory: "Certifications",
+                            item: userCerts[i],
+                            granted: true
                         });
                         newRecord.save();
                     }
@@ -93,7 +95,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             userID: req.body.id,
                             date: Date.now(),
                             category: "Merits",
-                            description: userResult.certifications[i] + " certification revoked."
+                            subCategory: "Certifications",
+                            item: userResult.certifications[i],
+                            granted: false
                         });
                         newRecord.save();
                     }
@@ -106,7 +110,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         userID: req.body.id,
                         date: Date.now(),
                         category: "Merits",
-                        description: differences[0][i] + " certification revoked."
+                        subCategory: "Certifications",
+                        item: differences[0][i],
+                        granted: false
                     });
                     newRecord.save();
                 }
@@ -116,7 +122,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         userID: req.body.id,
                         date: Date.now(),
                         category: "Merits",
-                        description: differences[1][i] + " certified."
+                        subCategory: "Certifications",
+                        item: differences[1][i],
+                        granted: true
                     });
                     newRecord.save();
                 }
@@ -131,7 +139,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             userID: req.body.id,
                             date: Date.now(),
                             category: "Merits",
-                            description: "Received " + userTabs[i] + " tab."
+                            subCategory: "Tabs",
+                            item: userTabs[i],
+                            granted: true
                         });
                         newRecord.save();
                     }
@@ -143,7 +153,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             userID: req.body.id,
                             date: Date.now(),
                             category: "Merits",
-                            description: userResult.tabs[i] + " tab revoked."
+                            subCategory: "Tabs",
+                            item: userResult.tabs[i],
+                            granted: false
                         });
                         newRecord.save();
                     }
@@ -156,7 +168,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         userID: req.body.id,
                         date: Date.now(),
                         category: "Merits",
-                        description: differences[0][i] + " tab revoked."
+                        subCategory: "Tabs",
+                        item: differences[0][i],
+                        granted: false
                     });
                     newRecord.save();
                 }
@@ -166,7 +180,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         userID: req.body.id,
                         date: Date.now(),
                         category: "Merits",
-                        description: "Received " + differences[1][i] + " tab."
+                        subCategory: "Tabs",
+                        item: differences[1][i],
+                        granted: true
                     });
                     newRecord.save();
                 }
@@ -181,7 +197,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             userID: req.body.id,
                             date: Date.now(),
                             category: "Merits",
-                            description: "Given " + userAwards[i] + " award."
+                            subCategory: "Awards",
+                            item: userAwards[i],
+                            granted: true
                         });
                         newRecord.save();
                     }
@@ -193,7 +211,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             userID: req.body.id,
                             date: Date.now(),
                             category: "Merits",
-                            description: userResult.awards[i] + " award revoked."
+                            subCategory: "Awards",
+                            item: userResult.awards[i],
+                            granted: false
                         });
                         newRecord.save();
                     }
@@ -206,7 +226,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         userID: req.body.id,
                         date: Date.now(),
                         category: "Merits",
-                        description: differences[0][i] + " award revoked."
+                        subCategory: "Awards",
+                        item: differences[0][i],
+                        granted: false
                     });
                     newRecord.save();
                 }
@@ -216,7 +238,9 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         userID: req.body.id,
                         date: Date.now(),
                         category: "Merits",
-                        description: "Given " + differences[1][i] + " award."
+                        subCategory: "Awards",
+                        item: differences[1][i],
+                        granted: true
                     });
                     newRecord.save();
                 }
@@ -235,7 +259,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 userID: req.body.id,
                 date: Date.now(),
                 category: "Status",
-                description: "Status changed to " + req.body.status + "."
+                item: req.body.status
             });
             newRecord.save();
         }
@@ -245,7 +269,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 userID: req.body.id,
                 date: Date.now(),
                 category: "Position",
-                description: `Position changed to ${newUnit.company} Company, ${newUnit.platoon}, ${newUnit.squad}, ${newUnit.team} Team.`
+                item: `${newUnit.company},${newUnit.platoon},${newUnit.squad},${newUnit.team}`
             });
             newRecord.save();
         }
@@ -278,7 +302,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                     userID: req.body.id,
                     date: Date.now(),
                     category: "Role",
-                    description: "Role changed to " + req.body.role + "."
+                    item: req.body.role
                 });
                 newRecord.save();
             }
@@ -296,7 +320,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 userID: req.body.id,
                 date: Date.now(),
                 category: "Rank",
-                description: "Rank changed to " + req.body.rank + "."
+                item: req.body.rank
             });
             newRecord.save();
         }
@@ -306,7 +330,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 userID: req.body.id,
                 date: Date.now(),
                 category: "MOS",
-                description: "MOS changed to " + req.body.position + "."
+                item: req.body.position
             });
             newRecord.save();
         }
@@ -337,7 +361,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                     editedUser: req.body.username, 
                     editedUserID: req.body.id, 
                     editDate: Date.now(), 
-                    editDescription: "Edited User"
+                    editType: "Edit"
                 });
                 newLog.save();
 
@@ -367,7 +391,7 @@ router.post("/user/delete/:id", isLoggedIn, (req, res) => {
                         editedUser: req.body.username,
                         editedUserID: req.params.id,
                         editDate: Date.now(),
-                        editDescription: "Deleted User"
+                        editType: "Deletion"
                     });
                     newLog.save();
         

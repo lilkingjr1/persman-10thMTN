@@ -216,7 +216,7 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
                     userID: doc.ownerID,
                     date: Date.now(),
                     category: "Status",
-                    description: "Status changed to Leave of Absence."
+                    item: "Leave of Absence"
                 });
                 newRecord.save();
 
@@ -249,7 +249,7 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
                         userID: foundDischarge.ownerID,
                         date: Date.now(),
                         category: "Status",
-                        description: "Status changed to Retired."
+                        item: "Retired"
                     });
                     newRecord.save();
 
@@ -278,7 +278,7 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
                     userID: doc.ownerID,
                     date: Date.now(),
                     category: "Status",
-                    description: "Joined the unit."
+                    item: "Joined"
                 });
                 newRecord.save();
 
