@@ -67,28 +67,75 @@ router.post("/opcenter/loa", isLoggedIn, function(req, res){
     });
 });
 
-router.get("/opcenter/requests", isLoggedIn, function(req, res){
-    if(req.user.role.num < 3) return res.redirect("/");
+router.get("/opcenter/requests/applications", isLoggedIn, function(req, res) {
+    if (req.user.role.num < 3) return res.redirect("/");
 
     let User = require("../models/user")(res.locals.config);
 
-    User.find({}, function(err,users){
-       if(err) {
-           console.log(err);
-       }
-       Discharge.find({}, function(err, discharges){
-           if(err) {
-               console.log(err);
-           }
-           Leave.find({}, function(err, leaves){
-               if(err) {
-                   console.log(err);
-               }
-               Application.find({}, function(err, apps){
-                   res.render("opcenter/requests", {users: users, discharges:discharges.sort((a, b) => b.dateCreated - a.dateCreated), leaves:leaves.sort((a, b) => b.dateCreated - a.dateCreated), applications:apps.sort((a, b) => b.dateCreated - a.dateCreated)})
-               })
-           })
-       });
+    User.find({}, function(err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            Application.find({}, function(err, applications) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedApplications = applications.sort((a, b) => b.dateCreated - a.dateCreated);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/opcenter/requests/applications", current: page, rowsPerPage: perPage, totalResult: sortedApplications.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("opcenter/requests", {users: users, requests: sortedApplications.slice(startPoint, startPoint + perPage), viewRequests: "Applications", requestsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/opcenter/requests/discharges", isLoggedIn, function(req, res) {
+    if (req.user.role.num < 3) return res.redirect("/");
+
+    let User = require("../models/user")(res.locals.config);
+
+    User.find({}, function(err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            Discharge.find({}, function(err, discharges) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedDischarges = discharges.sort((a, b) => b.dateCreated - a.dateCreated);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/opcenter/requests/discharges", current: page, rowsPerPage: perPage, totalResult: sortedDischarges.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("opcenter/requests", {users: users, requests: sortedDischarges.slice(startPoint, startPoint + perPage), viewRequests: "Discharges", requestsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
+router.get("/opcenter/requests/leaves", isLoggedIn, function(req, res) {
+    if (req.user.role.num < 3) return res.redirect("/");
+
+    let User = require("../models/user")(res.locals.config);
+
+    User.find({}, function(err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            Leave.find({}, function(err, leaves) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    let page = Number(req.query.page) || 1;
+                    let sortedLeaves = leaves.sort((a, b) => b.dateCreated - a.dateCreated);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/opcenter/requests/leaves", current: page, rowsPerPage: perPage, totalResult: sortedLeaves.length, slashSeparator: false, template: paginationTemplate});
+                    let startPoint = (perPage * page) - perPage;
+                    res.render("opcenter/requests", {users: users, requests: sortedLeaves.slice(startPoint, startPoint + perPage), viewRequests: "Leaves", requestsPagination: pagination.render()});
+                }
+            });
+        }
     });
 });
 
