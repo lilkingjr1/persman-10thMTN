@@ -5,7 +5,10 @@ const express = require("express"),
     async = require("async"),
     Application = require("../models/application"),
     EditLog = require("../models/editlog"),
-    ServiceRecord = require("../models/servicerecord");
+    ServiceRecord = require("../models/servicerecord"),
+    Pagination = require("pagination");
+
+let perPage = 10;
 
 router.get("/opcenter", isLoggedIn, function(req, res){
    res.render("opcenter/opcenter", {submitted: 0});
@@ -476,14 +479,34 @@ router.post("/settings", isLoggedIn, function(req,res){
     res.redirect("/settings");
 });
 
-router.get("/opcenter/logs", isLoggedIn, function(req, res) {
-    if(req.user.role.num < 4) return res.redirect("/");
+router.get("/opcenter/logs/edits", isLoggedIn, function(req, res) {
+    if (req.user.role.num < 4) return res.redirect("/");
 
-    EditLog.find({}, function(err, allLogs) {
+    EditLog.find({editType: "Edit"}, function(err, edits) {
         if (err) {
             console.log(err);
         } else {
-            res.render("opcenter/logs", {logs: allLogs});
+            let page = Number(req.query.page) || 1;
+            let sortedEdits = edits.sort((a, b) => b.editDate - a.editDate);
+            let pagination = new Pagination.TemplatePaginator({prelink: "/opcenter/logs/edits", current: page, rowsPerPage: perPage, totalResult: sortedEdits.length, slashSeparator: false, template: paginationTemplate});
+            let startPoint = (perPage * page) - perPage;
+            res.render("opcenter/logs", {logs: edits.slice(startPoint, startPoint + perPage), viewLogs: "Edits", logsPagination: pagination.render()});
+        }
+    });
+});
+
+router.get("/opcenter/logs/deletions", isLoggedIn, function(req, res) {
+    if (req.user.role.num < 4) return res.redirect("/");
+
+    EditLog.find({editType: "Deletion"}, function(err, deletions) {
+        if (err) {
+            console.log(err);
+        } else {
+            let page = Number(req.query.page) || 1;
+            let sortedDeletions = deletions.sort((a, b) => b.editDate - a.editDate);
+            let pagination = new Pagination.TemplatePaginator({prelink: "/opcenter/logs/deletions", current: page, rowsPerPage: perPage, totalResult: sortedDeletions.length, slashSeparator: false, template: paginationTemplate});
+            let startPoint = (perPage * page) - perPage;
+            res.render("opcenter/logs", {logs: deletions.slice(startPoint, startPoint + perPage), viewLogs: "Deletions", logsPagination: pagination.render()});
         }
     });
 });
@@ -493,6 +516,33 @@ function isLoggedIn(req,res,next){
         return next();
     }
     res.redirect("/login");
+}
+
+function paginationTemplate(result) {
+    var i, len, prelink;
+    var html = '<div><ul class="pagination justify-content-center">';
+    if (result.pageCount < 2) {
+        html += '</ul></div>';
+        return html;
+    }
+    prelink = this.preparePreLink(result.prelink);
+    if (result.previous) {
+        html += '<li class="page-item"><a class="page-link" href="' + prelink + result.previous + '">' + this.options.translator('PREVIOUS') + '</a></li>';
+    }
+    if (result.range.length) {
+        for (i=0, len=result.range.length; i<len; i++) {
+            if (result.range[i] === result.current) {
+                html += '<li class="active page-item"><a class="page-link" href="' + prelink + result.range[i] + '">' + result.range[i] + '</a></li>';
+            } else {
+                html += '<li class="page-item"><a class="page-link" href="' + prelink + result.range[i] + '">' + result.range[i] + '</a></li>';
+            }
+        }
+    }
+    if (result.next) {
+        html += '<li class="page-item"><a class="page-link" href="' + prelink + result.next + '" class="paginator-next">' + this.options.translator('NEXT') + '</a></li>';
+    }
+    html += '</ul></div>';
+    return html;
 }
 
 module.exports = router;
