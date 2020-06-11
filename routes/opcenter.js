@@ -160,7 +160,7 @@ router.post("/opcenter/deleterequest/:id", isLoggedIn, function(req,res){
             }
         });
     }
-    res.redirect("/opcenter/requests");
+    res.redirect("/opcenter/requests/applications?page=1");
 });
 
 router.post("/opcenter/viewrequest/:id", isLoggedIn, function(req,res){
@@ -346,7 +346,7 @@ router.post("/opcenter/:id/", isLoggedIn, function(req,res){
             });
         }
     }
-    res.redirect("/opcenter/requests");
+    res.redirect("/opcenter/requests/applications?page=1");
 });
 
 router.get("/settings", isLoggedIn, function(req,res){
