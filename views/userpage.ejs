@@ -444,7 +444,11 @@
 															<% let positionPieces = service.item.split(","); %>
 															<td>Position changed to <b><%=positionPieces[0]%> Company</b>, <b><%=positionPieces[1]%></b>, <b><%=positionPieces[2]%></b>, <b><%=positionPieces[3]%> Team</b>.</td>
 														<% } else if (service.category == "Status") { %>
-															<td>Status changed to <b><%=service.item%></b>.</td>
+															<% if (service.item == "Joined") { %>
+																<td><b><%=service.item%></b> the unit.</td>
+															<% } else { %>
+																<td>Status changed to <b><%=service.item%></b>.</td>
+															<% } %>
 														<% } %>
 													</tr>
 												<% } %>
