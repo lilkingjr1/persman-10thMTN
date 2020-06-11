@@ -376,6 +376,7 @@ router.post("/settings", isLoggedIn, function(req,res){
     let enableRetiredMembers = req.body.enableRetiredMembers;
     let enableVisibility = req.body.enableVisibility;
     let enableCallToAction = req.body.enableCallToAction;
+    let enableEventRegistration = req.body.enableEventRegistration;
     let certifications = req.body.certifications.split(",");
     let carouselImages = req.body.carouselImages.split(",");
     let carouselTitles = req.body.carouselTitles.split(",");
@@ -421,7 +422,8 @@ router.post("/settings", isLoggedIn, function(req,res){
 		&& (donateURL === res.locals.config.donateURL)
 		&& (enableRetiredMembers === res.locals.config.enableRetiredMembers)
 		&& (enableVisibility === res.locals.config.enableVisibility)
-		&& (enableCallToAction === res.locals.config.enableCallToAction)
+        && (enableCallToAction === res.locals.config.enableCallToAction)
+        && (enableEventRegistration === res.locals.config.enableEventRegistration)
 		&& (JSON.stringify(certifications) === JSON.stringify(res.locals.config.certifications))
 		&& (JSON.stringify(carouselImages) === JSON.stringify(res.locals.config.carouselImages))
 		&& (JSON.stringify(carouselTitles) === JSON.stringify(res.locals.config.carouselTitles))
@@ -462,6 +464,7 @@ router.post("/settings", isLoggedIn, function(req,res){
     res.locals.config.enableRetiredMembers = enableRetiredMembers;
     res.locals.config.enableVisibility = enableVisibility;
     res.locals.config.enableCallToAction = enableCallToAction;
+    res.locals.config.enableEventRegistration = enableEventRegistration;
     res.locals.config.certifications = certifications;
     res.locals.config.carouselImages = carouselImages;
     res.locals.config.carouselTitles = carouselTitles;
@@ -500,6 +503,7 @@ router.post("/settings", isLoggedIn, function(req,res){
         enableRetiredMembers: enableRetiredMembers,
         enableVisibility: enableVisibility,
         enableCallToAction: enableCallToAction,
+        enableEventRegistration: enableEventRegistration,
         certifications: certifications,
         carouselImages: carouselImages,
         carouselTitles: carouselTitles,

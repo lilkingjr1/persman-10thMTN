@@ -24,6 +24,7 @@ const SettingsSchema = new mongoose.Schema({
     enableApplication: {type: String, default: config.enableApplication},
     enableCallToAction: {type: String, default: config.enableCallToAction},
     enableRetiredMembers: {type: String, default: config.enableRetiredMembers},
+    enableEventRegistration: {type: String, default: config.enableEventRegistration},
     companies: {type: Array, default: config.companies},
     platoons: {type: Array, default: config.platoons},
     squads: {type: Array, default: config.squads},

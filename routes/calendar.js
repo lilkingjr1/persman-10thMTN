@@ -84,6 +84,7 @@ router.post("/calendar/event", isLoggedIn, function(req,res){
 
 router.post("/calendar/event/:id/users", isLoggedIn, function(req,res){
     if(req.user.role.num < 1) return res.redirect("/");
+    if(res.locals.config.enableEventRegistration === "off") return res.redirect("/calendar/event/" + req.params.id);
     if(req.body.type === "register") {
         Event.find({eventID: req.params.id}, function(err,foundEvent){
             if(err) {

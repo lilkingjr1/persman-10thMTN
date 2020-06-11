@@ -100,77 +100,79 @@
 			<h3 class="card-title text-left" style="font-weight: 600;">Event Information <span style="font-weight: 400;">- <%=event.start%> - <span><%=event.startTime%></span> EST | <span id="cst"></span> CST | <span id="pst"></span> PST | <span id="cet"></span> CET</span></h3>
 			<hr>
 			<% if(currentUser) { %>
-				<% if(currentUser.role.num >= 1) { %>
-				<div class="container-fluid mt-4">
-					<div class="row justify-content-center">
-						<div class="col-auto mb-3">
-							<div class="card text-center">
-								<div class="card-body">
-									<h5 class="card-title"><strong>Register</strong></h5>
-									<form action="/calendar/event/<%=event._id%>/users" method="POST">
-										<div class="form-group">
-											<button class="btn btn-success btn-sm">Register</button>
-											<input class="form-control" type="hidden" name="type" value="register">
-										</div>
-									</form>
-								</div>
-								<div class="card-footer">
-									<small>This action can be seen by <%=config.userGroups[1]%> and above.</small>
+				<% if(currentUser.role.num >= 1 && config.enableEventRegistration === "on") { %>
+					<div class="container-fluid mt-4">
+						<div class="row justify-content-center">
+							<div class="col-auto mb-3">
+								<div class="card text-center">
+									<div class="card-body">
+										<h5 class="card-title"><strong>Register</strong></h5>
+										<form action="/calendar/event/<%=event._id%>/users" method="POST">
+											<div class="form-group">
+												<button class="btn btn-success btn-sm">Register</button>
+												<input class="form-control" type="hidden" name="type" value="register">
+											</div>
+										</form>
+									</div>
+									<div class="card-footer">
+										<small>This action can be seen by <%=config.userGroups[1]%> and above.</small>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-auto mb-3">
-							<div class="card text-center">
-								<div class="card-body">
-									<h5 class="card-title"><strong>Unregister</strong></h5>
-									<form action="/calendar/event/<%=event._id%>/users" method="POST">
-										<div class="form-group">
-											<button class="btn btn-danger btn-sm">Unregister</button>
-											<input class="form-control" type="hidden" name="type" value="unregister">
-										</div>
-									</form>
-								</div>
-								<div class="card-footer">
-									<small>This action can be seen by <%=config.userGroups[1]%> and above.</small>
+							<div class="col-auto mb-3">
+								<div class="card text-center">
+									<div class="card-body">
+										<h5 class="card-title"><strong>Unregister</strong></h5>
+										<form action="/calendar/event/<%=event._id%>/users" method="POST">
+											<div class="form-group">
+												<button class="btn btn-danger btn-sm">Unregister</button>
+												<input class="form-control" type="hidden" name="type" value="unregister">
+											</div>
+										</form>
+									</div>
+									<div class="card-footer">
+										<small>This action can be seen by <%=config.userGroups[1]%> and above.</small>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 				<% } %>
 			<% } %>
-
-			<div>
-				<h4 class="card-title text-left" style="font-weight: 600;">Attending Users (<%=list.length%>)</h4>
-				<hr>
-				<input type="text" class="form-control" id="searchInput" onkeyup="searchFunction()" placeholder="Search by position (ex. 1st Platoon...)">
-				<table class="table table-sm table-striped" id="searchTable">
-					<thead>
-					<tr>
-						<th scope="col" style="width: 5%">Rank</th>
-						<th scope="col" style="width: 25%">Name</th>
-						<th scope="col" style="width: 35%">Position</th>
-						<th scope="col" style="width: 10%">MOS</th>
-						<th scope="col" style="width: 25%">Role</th>
-					</tr>
-					</thead>
-					<tbody>
-					<% list.forEach(function(user) { %>
+			
+			<% if (config.enableEventRegistration === "on") { %>
+				<div>
+					<h4 class="card-title text-left" style="font-weight: 600;">Attending Users (<%=list.length%>)</h4>
+					<hr>
+					<input type="text" class="form-control" id="searchInput" onkeyup="searchFunction()" placeholder="Search by position (ex. 1st Platoon...)">
+					<table class="table table-sm table-striped" id="searchTable">
+						<thead>
 						<tr>
-							<td class="align-middle"><img src="/ranks/small/<%=user.rank.toLowerCase()%>.png" title="<%=user.rank%>"></td>
-							<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
-							<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
-								<td class="align-middle">Not Assigned</td>
-							<% } else { %>
-								<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
-							<% } %>
-							<td class="align-middle"><%=user.position%></td>
-							<td class="align-middle"><%=user.role.name%></td>
+							<th scope="col" style="width: 5%">Rank</th>
+							<th scope="col" style="width: 25%">Name</th>
+							<th scope="col" style="width: 35%">Position</th>
+							<th scope="col" style="width: 10%">MOS</th>
+							<th scope="col" style="width: 25%">Role</th>
 						</tr>
-					<% }) %>
-					</tbody>
-				</table>
-			</div>
+						</thead>
+						<tbody>
+						<% list.forEach(function(user) { %>
+							<tr>
+								<td class="align-middle"><img src="/ranks/small/<%=user.rank.toLowerCase()%>.png" title="<%=user.rank%>"></td>
+								<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
+								<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
+									<td class="align-middle">Not Assigned</td>
+								<% } else { %>
+									<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
+								<% } %>
+								<td class="align-middle"><%=user.position%></td>
+								<td class="align-middle"><%=user.role.name%></td>
+							</tr>
+						<% }) %>
+						</tbody>
+					</table>
+				</div>
+			<% } %>
 		</div>
 	</div>
 </div>
