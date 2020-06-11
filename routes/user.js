@@ -221,6 +221,8 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
     let userTabs = [];
     let userAwards = [];
     let userSShops = [];
+    
+    let serviceRecordBatch = [];
 
     let User = require("../models/user")(res.locals.config);
 
@@ -265,7 +267,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             item: userCerts[i],
                             granted: true
                         });
-                        newRecord.save();
+                        serviceRecordBatch.push(newRecord);
                     }
                 }
             } else if (userCerts === null || userCerts === undefined) {
@@ -279,7 +281,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             item: userResult.certifications[i],
                             granted: false
                         });
-                        newRecord.save();
+                        serviceRecordBatch.push(newRecord);
                     }
                 }
             } else {
@@ -294,7 +296,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         item: differences[0][i],
                         granted: false
                     });
-                    newRecord.save();
+                    serviceRecordBatch.push(newRecord);
                 }
 
                 for (var i=0; i<differences[1].length; i++) {
@@ -306,7 +308,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         item: differences[1][i],
                         granted: true
                     });
-                    newRecord.save();
+                    serviceRecordBatch.push(newRecord);
                 }
             }
         }
@@ -323,7 +325,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             item: userTabs[i],
                             granted: true
                         });
-                        newRecord.save();
+                        serviceRecordBatch.push(newRecord);
                     }
                 }
             } else if (userTabs === null || userTabs === undefined) {
@@ -337,7 +339,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             item: userResult.tabs[i],
                             granted: false
                         });
-                        newRecord.save();
+                        serviceRecordBatch.push(newRecord);
                     }
                 }
             } else {
@@ -352,7 +354,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         item: differences[0][i],
                         granted: false
                     });
-                    newRecord.save();
+                    serviceRecordBatch.push(newRecord);
                 }
 
                 for (var i=0; i<differences[1].length; i++) {
@@ -364,7 +366,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         item: differences[1][i],
                         granted: true
                     });
-                    newRecord.save();
+                    serviceRecordBatch.push(newRecord);
                 }
             }
         }
@@ -381,7 +383,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             item: userAwards[i],
                             granted: true
                         });
-                        newRecord.save();
+                        serviceRecordBatch.push(newRecord);
                     }
                 }
             } else if (userAwards === null || userAwards === undefined) {
@@ -395,7 +397,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                             item: userResult.awards[i],
                             granted: false
                         });
-                        newRecord.save();
+                        serviceRecordBatch.push(newRecord);
                     }
                 }
             } else {
@@ -410,7 +412,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         item: differences[0][i],
                         granted: false
                     });
-                    newRecord.save();
+                    serviceRecordBatch.push(newRecord);
                 }
 
                 for (var i=0; i<differences[1].length; i++) {
@@ -422,7 +424,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                         item: differences[1][i],
                         granted: true
                     });
-                    newRecord.save();
+                    serviceRecordBatch.push(newRecord);
                 }
             }
         }
@@ -441,7 +443,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 category: "Status",
                 item: req.body.status
             });
-            newRecord.save();
+            serviceRecordBatch.push(newRecord);
         }
 
         if (userResult.unit.company !== newUnit.company || userResult.unit.platoon !== newUnit.platoon || userResult.unit.squad !== newUnit.squad || userResult.unit.team !== newUnit.team) {
@@ -451,7 +453,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 category: "Position",
                 item: `${newUnit.company},${newUnit.platoon},${newUnit.squad},${newUnit.team}`
             });
-            newRecord.save();
+            serviceRecordBatch.push(newRecord);
         }
 
         let roleNum = 0;
@@ -484,7 +486,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                     category: "Role",
                     item: req.body.role
                 });
-                newRecord.save();
+                serviceRecordBatch.push(newRecord);
             }
 
 			User.findOneAndUpdate({_id: req.body.id}, {$set: {role: {name: req.body.role, num: roleNum}}
@@ -502,7 +504,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 category: "Rank",
                 item: req.body.rank
             });
-            newRecord.save();
+            serviceRecordBatch.push(newRecord);
         }
 
         if (userResult.position !== req.body.position) {
@@ -512,7 +514,7 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 category: "MOS",
                 item: req.body.position
             });
-            newRecord.save();
+            serviceRecordBatch.push(newRecord);
         }
 		
         User.findOneAndUpdate({_id: req.body.id}, {
@@ -535,6 +537,12 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
 				req.flash("error",err.message);
 				res.redirect("/user/edit/"+req.body.id);
             } else {
+                ServiceRecord.insertMany(serviceRecordBatch, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+
                 let newLog = new EditLog({
                     editor: req.user.username, 
                     editorID: req.user._id, 
