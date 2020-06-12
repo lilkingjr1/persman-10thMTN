@@ -67,6 +67,28 @@ router.post("/opcenter/loa", isLoggedIn, function(req, res){
     });
 });
 
+router.get("/opcenter/requests", isLoggedIn, function(req, res) {
+    if (req.user.role.num < 3) return res.redirect("/");
+
+    let User = require("../models/user")(res.locals.config);
+
+    User.find({}, function(err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            Application.find({}, function(err, applications) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    let sortedApplications = applications.sort((a, b) => b.dateCreated - a.dateCreated);
+                    let pagination = new Pagination.TemplatePaginator({prelink: "/opcenter/requests/applications", current: 1, rowsPerPage: perPage, totalResult: sortedApplications.length, slashSeparator: false, template: paginationTemplate});
+                    res.render("opcenter/requests", {users: users, requests: sortedApplications.slice(0, perPage), viewRequests: "Applications", requestsPagination: pagination.render()});
+                }
+            });
+        }
+    });
+});
+
 router.get("/opcenter/requests/applications", isLoggedIn, function(req, res) {
     if (req.user.role.num < 3) return res.redirect("/");
 
