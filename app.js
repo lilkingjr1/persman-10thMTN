@@ -20,7 +20,7 @@ const NODE_PORT = process.env.NODE_PORT || 3000;
 const MONGO_IP = process.env.MONGO_IP || 'localhost';
 const MONGO_PORT = process.env.MONGO_PORT || '27017';
 
-mongoose.connect("mongodb://" + MONGO_IP + ':' + MONGO_PORT + "/persman", {useNewUrlParser: true});
+mongoose.connect("mongodb://" + MONGO_IP + ':' + MONGO_PORT + "/persman", {useNewUrlParser: true, useUnifiedTopology: true});
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.set('useFindAndModify', false);
 app.set("view engine", "ejs");
