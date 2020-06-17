@@ -436,6 +436,12 @@
     </script>
 <% } %>
 
+<% if (config.enableEventRegistration === "on") { %>
+	<script>
+		document.getElementById("enableeventregistration").checked = true;
+	</script>
+<% } %>
+
 <% if(config.enableVisibility === "on") { %>
     <script>
         document.getElementById("visibility").checked = true;
