@@ -1,136 +1,91 @@
 <% include ../partials/header %>
 
-<div class="container shadow mt-3 mb-5 p-3 white">
-<!--    <div class="container">-->
-<!--            <div class="row">-->
-<!--                <form action="/opcenter/requests" method="POST">-->
-<!--                    <h3>Load Requests</h3>-->
-
-<!--                    <div class="form-group">-->
-<!--                        <label for="type">Request Type</label>-->
-<!--                        <select class="form-control" id="type" name="type">-->
-<!--                            <option>All Requests</option>-->
-<!--                            <option>New Requests</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-
-<!--                    <div class="form-group"><button class="btn btn-success">Submit</button></div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--    </div>-->
-
-    <h1>User Requests</h1>
-    <hr>
-    <table class="table table-bordered table-sm text-center">
-		<thead>
-			<tr>
-				<th scope="col" style="width: 10%">Request Type</th>
-				<th scope="col" style="width: 15%">User</th>
-				<th scope="col" style="width: 20%">Position</th>
-				<th scope="col" style="width: 15%">Created</th>
-				<th scope="col" style="width: 10%">Status</th>
-				<th scope="col" style="width: 10%">Open</th>
-				<th scope="col" style="width: 10%">Delete</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% discharges.forEach(function(discharge) { %>
-				<% for(var i = 0; i < users.length; i++) { %>
-					<% if(users[i]._id == discharge.ownerID) { %>
-						<% var user = users[i]; %>
-						<tr>
-							<td class="align-middle"><%=discharge.requestType%></td>
-							<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
-							<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
-								<td class="align-middle">Not Assigned</td>
-							<% } else { %>
-								<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
+<div class="container shadow mt-3 mb-5 p-3 white-transparent">
+	<div class="card">
+        <div class="card-header">
+            <h5>Requests</h5>
+		</div>
+		<ul class="nav nav-tabs nav-justified" style="background-color: lightgrey" id="requestTabs" role="tablist">
+            <li class="nav-item">
+                <% if (viewRequests == "Applications") { %>
+                    <a class="nav-link active" id="applications-tab" href="/opcenter/requests/applications?page=1" role="tab" aria-controls="applications"
+                    aria-selected="true">Applications</a>
+                <% } else { %>
+                    <a class="nav-link" id="applications-tab" href="/opcenter/requests/applications?page=1" role="tab" aria-controls="applications"
+                    aria-selected="false">Applications</a>
+                <% } %>
+            </li>
+            <li class="nav-item">
+                <% if (viewRequests == "Discharges") { %>
+                    <a class="nav-link active" id="discharges-tab" href="/opcenter/requests/discharges?page=1" role="tab" aria-controls="discharges"
+                    aria-selected="true">Discharges</a>
+                <% } else { %>
+                    <a class="nav-link" id="discharges-tab" href="/opcenter/requests/discharges?page=1" role="tab" aria-controls="discharges"
+                    aria-selected="false">Discharges</a>
+                <% } %>
+			</li>
+			<li class="nav-item">
+                <% if (viewRequests == "Leaves") { %>
+                    <a class="nav-link active" id="leaves-tab" href="/opcenter/requests/leaves?page=1" role="tab" aria-controls="leaves"
+                    aria-selected="true">Leaves</a>
+                <% } else { %>
+                    <a class="nav-link" id="leaves-tab" href="/opcenter/requests/leaves?page=1" role="tab" aria-controls="leaves"
+                    aria-selected="false">Leaves</a>
+                <% } %>
+            </li>
+		</ul>
+		<div class="tab-content" id="requestTabsContent">
+            <br>
+            <div class="tab-pane fade show active" id="alltab" role="tabpanel">
+                <table class="table table-bordered table-sm text-center">
+                    <thead>
+                        <tr>
+							<th scope="col" style="width: 20%">User</th>
+							<th scope="col" style="width: 25%">Position</th>
+							<th scope="col" style="width: 15%">Created</th>
+							<th scope="col" style="width: 10%">Status</th>
+							<th scope="col" style="width: 10%">Open</th>
+							<th scope="col" style="width: 10%">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% requests.forEach(function(request) { %>
+							<% for(var i = 0; i < users.length; i++) { %>
+								<% if(users[i]._id == request.ownerID) { %>
+									<% var user = users[i]; %>
+									<tr>
+										<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
+										<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
+											<td class="align-middle">Not Assigned</td>
+										<% } else { %>
+											<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
+										<% } %>
+										<td class="align-middle"><%=request.dateCreated.toDateString()%></td>
+										<td class="align-middle"><span class="<%=request.read%>"><%=request.read%></span></td>
+										<td class="align-middle">
+											<form action="/opcenter/viewrequest/<%=request._id%>" method="post">
+												<input class="form-control" type="hidden" name="requestType" value="<%=request.requestType%>">
+												<button class="btn btn-primary btn-sm">Open Request</button>
+												<input class="form-control" type="hidden" name="id" value="<%=user._id%>">
+											</form>
+										</td>
+										<td class="align-middle">
+										  <form action="/opcenter/deleterequest/<%=request._id%>" method="post">
+											  <input class="form-control" type="hidden" name="requestType" value="<%=request.requestType%>">
+											  <button class="btn btn-danger btn-sm">Delete Request</button>
+											  <input class="form-control" type="hidden" name="id" value="<%=user._id%>">
+										  </form>
+										</td>
+									</tr>
+								<% } %>
 							<% } %>
-							<td class="align-middle"><%=discharge.dateCreated.toDateString()%></td>
-							<td class="align-middle"><span class="<%=discharge.read%>"><%=discharge.read%></span></td>
-							<td class="align-middle">
-								<form action="/opcenter/viewrequest/<%=discharge._id%>" method="post">
-									<input class="form-control" type="hidden" name="requestType" value="Discharge">
-									<button class="btn btn-primary btn-sm">Open Request</button>
-									<input class="form-control" type="hidden" name="id" value="<%=user._id%>">
-								</form>
-							</td>
-							<td class="align-middle">
-							  <form action="/opcenter/deleterequest/<%=discharge._id%>" method="post">
-								  <input class="form-control" type="hidden" name="requestType" value="Discharge">
-								  <button class="btn btn-danger btn-sm">Delete Request</button>
-								  <input class="form-control" type="hidden" name="id" value="<%=user._id%>">
-							  </form>
-							</td>
-						</tr>
-					<% } %>
-				<% } %>
-			<% }) %>
-			<% loas.forEach(function(loa) { %>
-				<% for(var i = 0; i < users.length; i++) { %>
-					<% if(users[i]._id == loa.ownerID) { %>
-						<% var user = users[i]; %>
-						<tr>
-							<td class="align-middle"><%=loa.requestType%></td>
-							<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
-							<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
-								<td class="align-middle">Not Assigned</td>
-							<% } else { %>
-								<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
-							<% } %>
-							<td class="align-middle"><%=loa.dateCreated.toDateString()%></td>
-							<td class="align-middle"><span class="<%=loa.read%>"><%=loa.read%></span></td>
-							<td class="align-middle">
-								<form action="/opcenter/viewrequest/<%=loa._id%>" method="post">
-									<button class="btn btn-primary btn-sm">Open Request</button>
-									<input class="form-control" type="hidden" name="id" value="<%=user._id%>">
-									<input class="form-control" type="hidden" name="requestType" value="Leave">
-								</form>
-							</td>
-							<td class="align-middle">
-								<form action="/opcenter/deleterequest/<%=loa._id%>" method="post">
-									<button class="btn btn-danger btn-sm">Delete Request</button>
-									<input class="form-control" type="hidden" name="id" value="<%=user._id%>">
-									<input class="form-control" type="hidden" name="requestType" value="Leave">
-								</form>
-							</td>
-						</tr>
-					<% } %>
-				<% } %>
-			<% }) %>
-			<% applications.forEach(function(request) { %>
-				<% for(var i = 0; i < users.length; i++) { %>
-					<% if(users[i]._id == request.ownerID) { %>
-						<% var user = users[i]; %>
-						<tr>
-							<td class="align-middle"><%=request.requestType%></td>
-							<td class="align-middle"><a href="/user/<%=user._id%>"><% if(user.rank.toLowerCase() !== "none") { %><%=user.rank%><% } %> <%=user.displayname%></a></td>
-							<% if(user.unit.squad.toLowerCase() === "none" && user.unit.platoon.toLowerCase() === "none") { %>
-								<td class="align-middle">Not Assigned</td>
-							<% } else { %>
-								<td class="align-middle"><%=user.unit.squad%>, <%=user.unit.platoon%>, <%=user.unit.company%></td>
-							<% } %>
-							<td class="align-middle"><%=request.dateCreated.toDateString()%></td>
-							<td class="align-middle"><span class="<%=request.read%>"><%=request.read%></span></td>
-							<td class="align-middle">
-								<form action="/opcenter/viewrequest/<%=request._id%>" method="post">
-									<button class="btn btn-primary btn-sm">Open Request</button>
-									<input class="form-control" type="hidden" name="id" value="<%=user._id%>">
-									<input class="form-control" type="hidden" name="requestType" value="Application">
-								</form>
-							</td>
-							<td class="align-middle">
-								<form action="/opcenter/deleterequest/<%=request._id%>" method="post">
-									<button class="btn btn-danger btn-sm">Delete Request</button>
-									<input class="form-control" type="hidden" name="id" value="<%=user._id%>">
-									<input class="form-control" type="hidden" name="requestType" value="Application">
-								</form>
-							</td>
-						</tr>
-					<% } %>
-				<% } %>
-			<% }) %>
-    </table>
+						<% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+		<%- requestsPagination %>
+	</div>
 </div>
 
 <div class="fixed-bottom">

@@ -1,0 +1,56 @@
+<% include ../partials/header %>
+
+<div class="container shadow mt-3 mb-3 p-3 white-transparent">
+    <div class="card">
+        <div class="card-header">
+            <h5>Logs</h5>
+        </div>
+        <ul class="nav nav-tabs nav-justified" style="background-color: lightgrey" id="logTabs" role="tablist">
+            <li class="nav-item">
+                <% if (viewLogs == "Edits") { %>
+                    <a class="nav-link active" id="edits-tab" href="/opcenter/logs/edits?page=1" role="tab" aria-controls="edits"
+                    aria-selected="true">Edits</a>
+                <% } else { %>
+                    <a class="nav-link" id="edits-tab" href="/opcenter/logs/edits?page=1" role="tab" aria-controls="edits"
+                    aria-selected="false">Edits</a>
+                <% } %>
+            </li>
+            <li class="nav-item">
+                <% if (viewLogs == "Deletions") { %>
+                    <a class="nav-link active" id="deletions-tab" href="/opcenter/logs/deletions?page=1" role="tab" aria-controls="deletions"
+                    aria-selected="true">Deletions</a>
+                <% } else { %>
+                    <a class="nav-link" id="deletions-tab" href="/opcenter/logs/deletions?page=1" role="tab" aria-controls="deletions"
+                    aria-selected="false">Deletions</a>
+                <% } %>
+            </li>
+        </ul>
+        <div class="tab-content" id="logTabsContent">
+            <br>
+            <div class="tab-pane fade show active" id="alltab" role="tabpanel">
+                <table class="table table-bordered table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 14%">Date</th>
+                            <th scope="col" style="width: 38%">Editor</th>
+                            <th scope="col" style="width: 38%">User Affected</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% logs.forEach(function(log) { %>
+                            <tr>
+                                <td class="align-middle"><%=log.editDate.toDateString()%></td>
+                                <td class="align-middle"><a href="/user/<%=log.editorID%>"><%=log.editor%></a></td>
+                                <td class="align-middle"><a href="/user/<%=log.editedUserID%>"><%=log.editedUser%></a></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <%- logsPagination %>
+    </div>
+</div>
+
+<div class="fixed-bottom">
+<% include ../partials/footer %>

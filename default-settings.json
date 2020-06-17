@@ -45,6 +45,7 @@
     "enableApplication":"on",
     "enableCallToAction":"on",
     "enableRetiredMembers":"on",
+    "enableEventRegistration":"on",
     "companies":[
        "Anvil"
     ],

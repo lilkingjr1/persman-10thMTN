@@ -248,6 +248,10 @@
 							<input type="checkbox" class="custom-control-input" id="retiredmembers" name="enableRetiredMembers">
 							<label class="custom-control-label" for="retiredmembers">Enable Retired Members table on the members page</label>
 						</div>
+						<div class="custom-control custom-switch form-group">
+							<input type="checkbox" class="custom-control-input" id="enableeventregistration" name="enableEventRegistration">
+							<label class="custom-control-label" for="enableeventregistration">Enable event registration and attendance</label>
+						</div>
 						<div class="row form-group">
 							<div class="col-md-9" style="margin-right: 0%">
 								<input type="text" class="form-control" id="companies" placeholder="Your desired company name" name="companies" value="<%=config.companies%>" required>
@@ -430,6 +434,12 @@
     <script>
         document.getElementById("retiredmembers").checked = true;
     </script>
+<% } %>
+
+<% if (config.enableEventRegistration === "on") { %>
+	<script>
+		document.getElementById("enableeventregistration").checked = true;
+	</script>
 <% } %>
 
 <% if(config.enableVisibility === "on") { %>

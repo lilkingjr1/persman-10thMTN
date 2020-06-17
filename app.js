@@ -14,13 +14,14 @@ const express = require("express"),
     cookieParser = require("cookie-parser"),
     favicon = require('serve-favicon'),
     path = require('path'),
-    Config = require("./models/settings");
+    Config = require("./models/settings"),
+    Lodash = require("lodash");
 
 const NODE_PORT = process.env.NODE_PORT || 3000;
 const MONGO_IP = process.env.MONGO_IP || 'localhost';
 const MONGO_PORT = process.env.MONGO_PORT || '27017';
 
-mongoose.connect("mongodb://" + MONGO_IP + ':' + MONGO_PORT + "/persman", {useNewUrlParser: true});
+mongoose.connect("mongodb://" + MONGO_IP + ':' + MONGO_PORT + "/persman", {useNewUrlParser: true, useUnifiedTopology: true});
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.set('useFindAndModify', false);
 app.set("view engine", "ejs");
@@ -38,15 +39,36 @@ app.use(require("express-session")({
 Config.find({}, function(err, result) {
     if (err) throw err;
     
-    var config;
+    const defaultConfig = require("./default-settings.json");
     if (result.length == 0) {
-        var DefaultConfig = new Config();
+        let DefaultConfig = new Config(defaultConfig);
         DefaultConfig.save();
 
-        config = DefaultConfig;
-    } else
-        config = result[0];
+        Start(DefaultConfig);
+    } else {
+        let config = result[0];
+        
+        if (Object.keys(defaultConfig).length !== Object.keys(config._doc).length-2) {
+            let oldConfigDoc = Lodash.cloneDeep(config._doc);
+            delete oldConfigDoc._id;
+            delete oldConfigDoc.__v;
 
+            Config.findByIdAndDelete(config._id, function(err, result) {
+                if (err) throw err; 
+                
+                let newConfig = Object.assign(defaultConfig, oldConfigDoc)
+                config = new Config(newConfig);
+                config.save();
+
+                Start(config);
+            })
+        } else {
+            Start(config);
+        }
+    }
+});
+
+function Start(config) {
     let User = require("./models/user")(config);
 
     app.use(flash());
@@ -78,4 +100,4 @@ Config.find({}, function(err, result) {
     app.listen(NODE_PORT, function(){
         console.log("PERSMAN: ONLINE") ;
     });
-});
+}

@@ -99,6 +99,18 @@ table {
     font-weight: 400;
 }
 
+.Discharged {
+    display: inline-block;
+    background-color: #e91515; 
+    padding: .1rem .25rem;
+    font-size: .875rem;
+    line-height: 1;
+    border-radius: .2rem;
+    color: white; 
+    border: 1px solid transparent;
+    font-weight: 400;
+}
+
 .Active {
     display: inline-block;
     background-color: #208710; 
