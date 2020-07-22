@@ -23,16 +23,16 @@ If you would like a more generic version of this site, suitible for use by any u
                 <img src="https://avatars.githubusercontent.com/u/4533989?v=3" width="100px;" alt=""/><br /><sub><b>lilkingjr1</b></sub>
             </a>
             <br />
-            <a href="https://github.com/lilkingjr1/persman-10thMTN/commits?author=lilkingjr1" title="Codes">💻</a>
             <a href="https://github.com/lilkingjr1/persman-10thMTN/commits?author=lilkingjr1" title="Maintains">🚧</a>
+            <a href="https://github.com/lilkingjr1/persman-10thMTN/commits?author=lilkingjr1" title="Codes">💻</a>
         </td>
         <td align="center">
             <a href="https://peterg.xyz/">
                 <img src="https://avatars.githubusercontent.com/u/11802285?v=3" width="100px;" alt=""/><br /><sub><b>peter-r-g</b></sub>
             </a>
             <br />
-            <a href="https://github.com/lilkingjr1/persman-10thMTN/commits?author=peter-r-g" title="Codes">💻</a>
             <a href="https://github.com/lilkingjr1/persman-10thMTN/commits?author=peter-r-g" title="Maintains">🚧</a>
+            <a href="https://github.com/lilkingjr1/persman-10thMTN/commits?author=peter-r-g" title="Codes">💻</a>
         </td>
     </tr>
 </table>
