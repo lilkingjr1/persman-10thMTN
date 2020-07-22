@@ -23,7 +23,7 @@
     "flag-icon-css": "^3.4.6",
     "flash": "^1.1.0",
     "fs": "0.0.1-security",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
     "mongoose": "^5.7.5",
