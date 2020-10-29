@@ -157,6 +157,14 @@ router.post('/reset/:token', function(req, res) {
  
  router.post("/register", function(req, res){
      let role = {name:res.locals.config.userGroups[0], num:0};
+	 let usernameRE = /^[0-9a-zA-Z_.-]{1,25}$/g;
+	 let displaynameRE = /^[A-Z]{1}\. [A-Z]{1}[^!@#$%^&*()_=+[\]{}.?<>|\\;:]{1,25}$/g;
+	 let passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/g;
+	 
+	 if(!usernameRE.test(req.body.username) || !displaynameRE.test(req.body.displayname) || !passwordRE.test(req.body.password)) {
+		 return res.render("register", {email: req.body.email, username: req.body.username, displayname: req.body.displayname, password: req.body.password, error: "NO BOTS ALLOWED! 😠"});
+	 }
+	 
      if(req.body.username === "Red-Thirten") role = {name: res.locals.config.userGroups[5], num:5};
 
     let User = require("../models/user")(res.locals.config);

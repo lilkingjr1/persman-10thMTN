@@ -28,14 +28,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="username" class="form-control" id="username" name="username" required placeholder="enter a username" value="<%=username%>" required pattern="[0-9a-zA-Z_.-]*">
-                            <small class="form-text muted-text">The max length is 16 characters, and no special characters or whitespace is allowed. <b>Cannot be changed later.</b></small>
+                            <input type="username" class="form-control" id="username" name="username" required placeholder="enter a username" value="<%=username%>" required pattern="^[0-9a-zA-Z_.-]{1,25}$">
+                            <small class="form-text muted-text">The max length is 25 characters, and no special characters or whitespace is allowed. <b>Cannot be changed later.</b></small>
                         </div>
 						<div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="displayname" name="displayname" required placeholder="display name (ex. J. Appleseed)" value="<%=displayname%>" pattern="[A-Z]{1}\. [A-Z]{1}.+">
+                            <input type="text" class="form-control" id="displayname" name="displayname" required placeholder="display name (ex. J. Appleseed)" value="<%=displayname%>" pattern="^[A-Z]{1}\. [A-Z]{1}[^!@#$%^&*()_=+[\]{}.?<>|\\;:]{1,25}$">
                             <small class="form-text muted-text">Be sure to follow the format: <code>[Capital First Initial][Period][Space][Capitalized Last Name]</code></small>
                         </div>
                         <div class="input-group form-group">
@@ -60,11 +60,6 @@
     </div>
 
 </div>
-
-
-<script>
- document.getElementById("username").maxLength = "16";
-</script>
 
 <div class="fixed-bottom">
 <% include partials/footer %>

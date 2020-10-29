@@ -20,6 +20,7 @@ const express = require("express"),
 const NODE_PORT = process.env.NODE_PORT || 3000;
 const MONGO_IP = process.env.MONGO_IP || 'localhost';
 const MONGO_PORT = process.env.MONGO_PORT || '27017';
+const PASSPORT_SECRET = process.env.PASSPORT_SECRET || 'Im_dumb_and_didnt_set_my_passport_secret';
 
 mongoose.connect("mongodb://" + MONGO_IP + ':' + MONGO_PORT + "/persman", {useNewUrlParser: true, useUnifiedTopology: true});
 app.use(bodyParser.urlencoded({extended: true}));
@@ -31,7 +32,7 @@ app.use(favicon(path.join(__dirname, '.', 'public', 'favicon.ico')));
 
 //PASSPORT
 app.use(require("express-session")({
-    secret: process.env.PASSPORT_SECRET,
+    secret: PASSPORT_SECRET,
     resave: false,
     saveUninitialized: false
 }));
