@@ -432,8 +432,10 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
         let newUnit = {company: req.body.company, platoon: req.body.platoon, squad: req.body.squad, team: req.body.team};
 		if(req.body.status === "Reserve") {
             newUnit = {company: req.body.company, platoon: "None", squad: "None", team: "None"};
+			userSShops = [];
 		} else if(req.body.status === "Retired" || req.body.status === "Discharged") {
             newUnit = {company: "None", platoon: "None", squad: "None", team: "None"};
+			userSShops = [];
         }
 
         if (req.body.status !== userResult.status) {
@@ -524,7 +526,6 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
                 rank: req.body.rank,
                 status: req.body.status,
                 position: req.body.position,
-                sShop: req.body.sShop,
                 unit: newUnit,
                 certifications: userCerts,
                 tabs: userTabs,
