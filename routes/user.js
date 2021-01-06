@@ -432,10 +432,10 @@ router.post("/user/edit", isLoggedIn, function (req, res) {
         let newUnit = {company: req.body.company, platoon: req.body.platoon, squad: req.body.squad, team: req.body.team};
 		if(req.body.status === "Reserve") {
             newUnit = {company: req.body.company, platoon: "None", squad: "None", team: "None"};
-			userSShops = [];
+			userSShops = null;
 		} else if(req.body.status === "Retired" || req.body.status === "Discharged") {
             newUnit = {company: "None", platoon: "None", squad: "None", team: "None"};
-			userSShops = [];
+			userSShops = null;
         }
 
         if (req.body.status !== userResult.status) {
