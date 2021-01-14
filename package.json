@@ -1,7 +1,7 @@
 {
-  "name": "persman",
-  "version": "1.4.0",
-  "description": "",
+  "name": "persman-10thMTN",
+  "version": "2.0.0",
+  "description": "A personnel management tool built with NodeJS, Express, MongoDB, and additional modifications for the 10th MTN Div. milsim unit.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
