@@ -26,7 +26,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
-    "mongoose": "^5.7.5",
+    "mongoose": "^5.13.15",
     "mongoose-unique-validator": "^2.0.3",
     "nodemailer": "^6.4.16",
     "pagination": "^0.4.6",
